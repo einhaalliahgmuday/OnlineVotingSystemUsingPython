@@ -1,0 +1,219 @@
+<!-- election is now closed -->
+{% extends "base.html" %} {% block title %}Vote{% endblock %} {%block content%}
+<form action="/vote" method="post">
+  <label for="president">President:</label>
+  <input type="radio" id="president1" name="president" value="candidate1" />
+  Candidate 1
+  <input type="radio" id="president2" name="president" value="candidate2" />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="vice_president">Vice President:</label>
+  <input
+    type="radio"
+    id="vice_president1"
+    name="vice_president"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="vice_president2"
+    name="vice_president"
+    value="candidate2"
+  />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="executive_board_sec">Executive Board Secretary:</label>
+  <input
+    type="radio"
+    id="executive_board_sec1"
+    name="executive_board_sec"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="executive_board_sec2"
+    name="executive_board_sec"
+    value="candidate2"
+  />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="vp_finance">Vice President of Finance:</label>
+  <input type="radio" id="vp_finance1" name="vp_finance" value="candidate1" />
+  Candidate 1
+  <input type="radio" id="vp_finance2" name="vp_finance" value="candidate2" />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="vp_academic_affairs">Vice President of Academic Affairs:</label>
+  <input
+    type="radio"
+    id="vp_academic_affairs1"
+    name="vp_academic_affairs"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="vp_academic_affairs2"
+    name="vp_academic_affairs"
+    value="candidate2"
+  />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="vp_internal_external_affairs"
+    >Vice President of Internal and External Affairs:</label
+  >
+  <input
+    type="radio"
+    id="vp_internal_external_affairs1"
+    name="vp_internal_external_affairs"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="vp_internal_external_affairs2"
+    name="vp_internal_external_affairs"
+    value="candidate2"
+  />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="vp_public_relations">Vice President of Public Relations:</label>
+  <input
+    type="radio"
+    id="vp_public_relations1"
+    name="vp_public_relations"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="vp_public_relations2"
+    name="vp_public_relations"
+    value="candidate2"
+  />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="vp_research_dev"
+    >Vice President of Research and Development:</label
+  >
+  <input
+    type="radio"
+    id="vp_research_dev1"
+    name="vp_research_dev"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="vp_research_dev2"
+    name="vp_research_dev"
+    value="candidate2"
+  />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="first_yr_rep">First Year Representative:</label>
+  <input
+    type="radio"
+    id="first_yr_rep1"
+    name="first_yr_rep"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="first_yr_rep2"
+    name="first_yr_rep"
+    value="candidate2"
+  />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="second_yr_rep">Second Year Representative:</label>
+  <input
+    type="radio"
+    id="second_yr_rep1"
+    name="second_yr_rep"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="second_yr_rep2"
+    name="second_yr_rep"
+    value="candidate2"
+  />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="third_yr_rep">Third Year Representative:</label>
+  <input
+    type="radio"
+    id="third_yr_rep1"
+    name="third_yr_rep"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="third_yr_rep2"
+    name="third_yr_rep"
+    value="candidate2"
+  />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <label for="fourth_yr_rep">Fourth Year Representative:</label>
+  <input
+    type="radio"
+    id="fourth_yr_rep1"
+    name="fourth_yr_rep"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="fourth_yr_rep2"
+    name="fourth_yr_rep"
+    value="candidate2"
+  />
+  Candidate 2
+  <!-- Add more candidates as needed -->
+
+  <br />
+
+  <input type="submit" value="Submit Votes" />
+  <!-- #use input, not button for submit -->
+</form>
+{% endblock %}

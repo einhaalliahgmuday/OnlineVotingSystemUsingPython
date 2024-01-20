@@ -1,6 +1,6 @@
 <!-- election is now closed -->
 {% extends "base.html" %} {% block title %}Home{% endblock %} {%block content%}
 <a href="/logout">Logout</a>
-{% if userType == "student" %}
+{% if user.userType == "Student" %}
 <a href="/vote">Vote</a>
 {% endif %} {% endblock %}

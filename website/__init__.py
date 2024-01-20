@@ -12,7 +12,6 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{DB_NAME}"
     db.init_app(app)
 
-
     from .views import views
     from .auth import auth
 
@@ -29,15 +28,7 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(userId):
-        student = models.Student.query.get(userId)
-        admin = models.Admin.query.get(userId)
-
-        if student:
-            return student
-        elif admin:
-            return admin
-        else:
-            return None
+        return models.User.query.get(userId)
 
     return app
 

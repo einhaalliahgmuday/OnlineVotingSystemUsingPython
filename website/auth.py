@@ -5,38 +5,28 @@ from . import models
 
 auth = Blueprint('auth', __name__)
 
-def isUserExists(userType, userId, password):
-    user = None
-
-    if userType == "student":
-        user = models.Student.query.get(userId)
-    elif userType == "admin":
-        user = models.Admin.query.get(userId)
-
-    if user:
-        if user.password == password:
-            login_user(user, remember=False)
-            return True
-                
-        else:
-            return False
-    else:
-        return False
+def getUser(userId, password, userType):
+    user = models.User.query.filter(models.User.userId == userId, models.User.password == password, models.User.userType == userType).first()
+    return user
 
 @auth.route('/login/admin', methods=['GET', 'POST'])
 def loginAdmin():
     if request.method == 'POST':
-        if isUserExists("admin", request.form.get('userId'), request.form.get('password')):
+        user = getUser(request.form.get('userId'), request.form.get('password'), "Admin")
+        if user:
+            login_user(user)
             return redirect(url_for("views.home"))
         else:
             return "Invalid credentials."
 
-    return render_template("login-admin.html")  #, user=current_user
+    return render_template("login-admin.html")
 
 @auth.route('/login/student', methods=['GET', 'POST'])
 def loginStudent():
     if request.method == 'POST':
-        if isUserExists("student", request.form.get('userId'), request.form.get('password')):
+        user = getUser(request.form.get('userId'), request.form.get('password'), "Student")
+        if user:
+            login_user(user)
             return redirect(url_for("views.home"))
         else:
             return "Invalid credentials."
@@ -47,5 +37,5 @@ def loginStudent():
 @auth.route('/logout')
 @login_required
 def logout():
-    logout_user()
+    logout_user()   
     return redirect(url_for('views.selectUserType'))

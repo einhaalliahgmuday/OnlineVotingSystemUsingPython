@@ -6,16 +6,10 @@ from . import models
 
 views = Blueprint('views', __name__)
 
-def getUserType():
-    if isinstance(current_user, models.Student):
-        return "student"
-    elif isinstance(current_user, models.Admin):
-        return "admin"
-
 @views.route('/')
 @login_required
 def home():
-    return render_template('home.html', user=current_user, userType=getUserType())
+    return render_template('home.html', user=current_user)
 
 @views.route('/select-user-type')
 def selectUserType():
@@ -25,7 +19,7 @@ def selectUserType():
 @login_required
 def vote():
     if request.method == 'POST':
-        voter = current_user.studentId  #has problem with this, can't use userId
+        voter = current_user.userId
         president = request.form.get('president')
         vice_president = request.form.get('vice_president')
         executive_board_sec = request.form.get('executive_board_sec')

@@ -2,33 +2,29 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.orm import synonym
 
-class Student(db.Model, UserMixin):
-    studentId = db.Column(db.String(15), primary_key=True)
+class User(db.Model, UserMixin):
+    userId = db.Column(db.String(15), primary_key=True)
+    password = db.Column(db.String(100), nullable=False)
+    userType = db.Column(db.String(20), nullable=False)
+
+    def get_id(self):
+        return str(self.userId)
+
+class Student(db.Model):
+    studentId = db.Column(db.String(15), db.ForeignKey('user.userId'), primary_key=True)
     firstName = db.Column(db.String(100), nullable=False)
     lastName = db.Column(db.String(100), nullable=False)
     course = db.Column(db.String(10), nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-    
-    userId = synonym(studentId)
 
-    def get_id(self):
-        return str(self.studentId)
-
-class Admin(db.Model, UserMixin):
-    adminId = db.Column(db.String(15), primary_key=True)
+class Admin(db.Model):
+    adminId = db.Column(db.String(15), db.ForeignKey('user.userId'), primary_key=True)
     firstName = db.Column(db.String(100), nullable=False)
     lastName = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-
-    userId = synonym(adminId)
-
-    def get_id(self):
-        return str(self.adminId)
 
 class Candidate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    position = db.Column(db.String(100), nullable=False)
     studentId = db.Column(db.String(15), db.ForeignKey('student.studentId'), nullable=False, unique=True)
+    position = db.Column(db.String(100), nullable=False)
     voteCount = db.Column(db.Integer)
     posts = db.relationship('Post')
 

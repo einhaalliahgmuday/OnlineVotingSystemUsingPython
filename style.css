@@ -1,5 +1,3 @@
-/* Add the following styles for buttons and form visibility */
-
 body{
     background-image: url('Background.jpg');
     background-size: cover;
@@ -121,13 +119,13 @@ nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    display: flex; /* Use flex container */
-    justify-content: space-between; /* Distribute items equally */
+    display: flex; 
+    justify-content: space-between; 
 }
 
 nav li {
     
-    flex: 1; /* Each item takes an equal portion of the available space */
+    flex: 1; 
 
 }
 
@@ -187,13 +185,12 @@ main {
 .option {
     margin-left: 10px;
     padding: 5px;
-    background-color: #7D0000; /* Green background color */
+    background-color: #7D0000; 
     color: white;
     border-radius: 5px;
     cursor: pointer;
 }
 
-/* Add hover effect */
 .option:hover {
     background-color: #ffd30f;
     color: #7D0000;

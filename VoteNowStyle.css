@@ -21,14 +21,13 @@ nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    display: flex; /* Use flex container */
-    justify-content: space-between; /* Distribute items equally */
+    display: flex; 
+    justify-content: space-between; 
 }
 
 nav li {
     
-    flex: 1; /* Each item takes an equal portion of the available space */
-
+    flex: 1; 
 }
 
 nav a {
@@ -74,19 +73,19 @@ h4 {
 
 .vote-options li {
     margin-bottom: 10px;
-    display: flex; /* Use flex to align radio button and label on the same line */
+    display: flex; 
 }
 
 input[type="radio"] {
     display: inline-block; 
-    margin-right: 10px; /* Add margin for spacing between radio button and label */
+    margin-right: 10px;
 }
 
 label {
     font-weight: bold;
     cursor: pointer;
-    padding-left: 5px; /* Adjust padding for spacing between bullet and label text */
-    display: inline-block; /* Display label as inline block to prevent bullet from centering vertically */
+    padding-left: 5px; 
+    display: inline-block;
 }
 
 

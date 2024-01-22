@@ -1,0 +1,267 @@
+{% extends "base.html" %} {% block title %}Create Ballot{% endblock %} {%block content%}
+<div class="container">
+    <h2>Create Ballot</h2>
+    <a href="/"><button>Back</button></a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == 'success' %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <h3>Candidates</h3>
+    <form method="post" action="/create-ballot" id="createBallotForm">
+
+      <!-- Customize this form based on your ballot structure -->
+      <div>
+        <label for="president_id">President:</label><br>
+        <input type="text" name="president_id1" id="president_id1" placeholder="Enter Student Number" required>
+        <span id="president_name_1"></span>
+        <span id="president_course_1"></span><br>
+
+        <input type="text" name="president_id2" id="president_id2" placeholder="Enter Student Number">
+        <span id="president_name_2"></span>
+        <span id="president_course_2"></span><br>
+
+        <input type="text" name="president_id3" id="president_id3" placeholder="Enter Student Number">
+        <span id="president_name_3"></span>
+        <span id="president_course_3"></span><br>
+
+        <input type="text" name="president_id4" id="president_id4" placeholder="Enter Student Number">
+        <span id="president_name_4"></span>
+        <span id="president_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="vice_president_id">Vice President:</label><br>
+        <input type="text" name="vice_president_id1" id="vice_president_id1" placeholder="Enter Student Number" required>
+        <span id="vice_president_name_1"></span>
+        <span id="vice_president_course_1"></span><br>
+
+        <input type="text" name="vice_president_id2" id="vice_president_id2" placeholder="Enter Student Number">
+        <span id="vice_president_name_2"></span>
+        <span id="vice_president_course_2"></span><br>
+
+        <input type="text" name="vice_president_id3" id="vice_president_id3" placeholder="Enter Student Number">
+        <span id="vice_president_name_3"></span>
+        <span id="vice_president_course_3"></span><br>
+
+        <input type="text" name="vice_president_id4" id="vice_president_id4" placeholder="Enter Student Number">
+        <span id="vice_president_name_4"></span>
+        <span id="vice_president_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="executive_board_sec_id">Executive Board Secretary:</label><br>
+        <input type="text" name="executive_board_sec_id1" id="executive_board_sec_id1" placeholder="Enter Student Number" required>
+        <span id="executive_board_sec_name_1"></span>
+        <span id="executive_board_sec_course_1"></span><br>
+
+        <input type="text" name="executive_board_sec_id2" id="executive_board_sec_id2" placeholder="Enter Student Number">
+        <span id="executive_board_sec_name_2"></span>
+        <span id="executive_board_sec_course_2"></span><br>
+
+        <input type="text" name="executive_board_sec_id3" id="executive_board_sec_id3" placeholder="Enter Student Number">
+        <span id="executive_board_sec_name_3"></span>
+        <span id="executive_board_sec_course_3"></span><br>
+
+        <input type="text" name="executive_board_sec_id4" id="executive_board_sec_id4" placeholder="Enter Student Number">
+        <span id="executive_board_sec_name_4"></span>
+        <span id="executive_board_sec_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="vp_finance_id">Vice President of Finance:</label><br>
+        <input type="text" name="vp_finance_id1" id="vp_finance_id1" placeholder="Enter Student Number" required>
+        <span id="vp_finance_name_1"></span>
+        <span id="vp_finance_course_1"></span><br>
+
+        <input type="text" name="vp_finance_id2" id="vp_finance_id2" placeholder="Enter Student Number">
+        <span id="vp_finance_name_2"></span>
+        <span id="vp_finance_course_2"></span><br>
+
+        <input type="text" name="vp_finance_id3" id="vp_finance_id3" placeholder="Enter Student Number">
+        <span id="vp_finance_name_3"></span>
+        <span id="vp_finance_course_3"></span><br>
+
+        <input type="text" name="vp_finance_id4" id="vp_finance_id4" placeholder="Enter Student Number">
+        <span id="vp_finance_name_4"></span>
+        <span id="vp_finance_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="vp_academic_affairs_id">Vice President of Academic Affairs:</label><br>
+        <input type="text" name="vp_academic_affairs_id1" id="vp_academic_affairs_id1" placeholder="Enter Student Number" required>
+        <span id="vp_academic_affairs_name_1"></span>
+        <span id="vp_academic_affairs_course_1"></span><br>
+
+        <input type="text" name="vp_academic_affairs_id2" id="vp_academic_affairs_id2" placeholder="Enter Student Number">
+        <span id="vp_academic_affairs_name_2"></span>
+        <span id="vp_academic_affairs_course_2"></span><br>
+
+        <input type="text" name="vp_academic_affairs_id3" id="vp_academic_affairs_id3" placeholder="Enter Student Number" >
+        <span id="vp_academic_affairs_name_3"></span>
+        <span id="vp_academic_affairs_course_3"></span><br>
+
+        <input type="text" name="vp_academic_affairs_id4" id="vp_academic_affairs_id4" placeholder="Enter Student Number" >
+        <span id="vp_academic_affairs_name_4"></span>
+        <span id="vp_academic_affairs_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="vp_internal_external_affairs_id">Vice President of Internal and External Affairs:</label><br>
+        <input type="text" name="vp_internal_external_affairs_id1" id="vp_internal_external_affairs_id1" placeholder="Enter Student Number" required>
+        <span id="vp_internal_external_affairs_name_1"></span>
+        <span id="vp_internal_external_affairs_course_1"></span><br>
+
+        <input type="text" name="vp_internal_external_affairs_id2" id="vp_internal_external_affairs_id2" placeholder="Enter Student Number">
+        <span id="vp_internal_external_affairs_name_2"></span>
+        <span id="vp_internal_external_affairs_course_2"></span><br>
+
+        <input type="text" name="vp_internal_external_affairs_id3" id="vp_internal_external_affairs_id3" placeholder="Enter Student Number">
+        <span id="vp_internal_external_affairs_name_3"></span>
+        <span id="vp_internal_external_affairs_course_3"></span><br>
+
+        <input type="text" name="vp_internal_external_affairs_id4" id="vp_internal_external_affairs_id4" placeholder="Enter Student Number">
+        <span id="vp_internal_external_affairs_name_4"></span>
+        <span id="vp_internal_external_affairs_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="vp_public_relations_id">Vice President of Public Relations:</label><br>
+        <input type="text" name="vp_public_relations_id1" id="vp_public_relations_id1" placeholder="Enter Student Number">
+        <span id="vp_public_relations_name_1"></span>
+        <span id="vp_public_relations_course_1"></span><br>
+
+        <input type="text" name="vp_public_relations_id2" id="vp_public_relations_id2" placeholder="Enter Student Number">
+        <span id="vp_public_relations_name_2"></span>
+        <span id="vp_public_relations_course_2"></span><br>
+
+        <input type="text" name="vp_public_relations_id3" id="vp_public_relations_id3" placeholder="Enter Student Number">
+        <span id="vp_public_relations_name_3"></span>
+        <span id="vp_public_relations_course_3"></span><br>
+
+        <input type="text" name="vp_public_relations_id4" id="vp_public_relations_id4" placeholder="Enter Student Number">
+        <span id="vp_public_relations_name_4"></span>
+        <span id="vp_public_relations_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="vp_research_dev_id">Vice President of Research and Development:</label><br>
+        <input type="text" name="vp_research_dev_id1" id="vp_research_dev_id1" placeholder="Enter Student Number" required>
+        <span id="vp_research_dev_name_1"></span>
+        <span id="vp_research_dev_course_1"></span><br>
+
+        <input type="text" name="vp_research_dev_id2" id="vp_research_dev_id2" placeholder="Enter Student Number">
+        <span id="vp_research_dev_name_2"></span>
+        <span id="vp_research_dev_course_2"></span><br>
+
+        <input type="text" name="vp_research_dev_id3" id="vp_research_dev_id3" placeholder="Enter Student Number">
+        <span id="vp_research_dev_name_3"></span>
+        <span id="vp_research_dev_course_3"></span><br>
+
+        <input type="text" name="vp_research_dev_id4" id="vp_research_dev_id4" placeholder="Enter Student Number">
+        <span id="vp_research_dev_name_4"></span>
+        <span id="vp_research_dev_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="first_yr_rep_id">First Year Representative:</label><br>
+        <input type="text" name="first_yr_rep_id1" id="first_yr_rep_id1" placeholder="Enter Student Number" required>
+        <span id="first_yr_rep_name_1"></span>
+        <span id="first_yr_rep_course_1"></span><br>
+
+        <input type="text" name="first_yr_rep_id2" id="first_yr_rep_id2" placeholder="Enter Student Number">
+        <span id="first_yr_rep_name_2"></span>
+        <span id="first_yr_rep_course_2"></span><br>
+
+        <input type="text" name="first_yr_rep_id3" id="first_yr_rep_id3" placeholder="Enter Student Number">
+        <span id="first_yr_rep_name_3"></span>
+        <span id="first_yr_rep_course_3"></span><br>
+
+        <input type="text" name="first_yr_rep_id4" id="first_yr_rep_id4" placeholder="Enter Student Number">
+        <span id="first_yr_rep_name_4"></span>
+        <span id="first_yr_rep_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="second_yr_rep_id">Second Year Representative:</label><br>
+        <input type="text" name="second_yr_rep_id1" id="second_yr_rep_id1" placeholder="Enter Student Number" required>
+        <span id="second_yr_rep_name_1"></span>
+        <span id="second_yr_rep_course_1"></span><br>
+
+        <input type="text" name="second_yr_rep_id2" id="second_yr_rep_id2" placeholder="Enter Student Number">
+        <span id="second_yr_rep_name_2"></span>
+        <span id="second_yr_rep_course_2"></span><br>
+
+        <input type="text" name="second_yr_rep_id3" id="second_yr_rep_id3" placeholder="Enter Student Number">
+        <span id="second_yr_rep_name_3"></span>
+        <span id="second_yr_rep_course_3"></span><br>
+
+        <input type="text" name="second_yr_rep_id4" id="second_yr_rep_id4" placeholder="Enter Student Number">
+        <span id="second_yr_rep_name_4"></span>
+        <span id="second_yr_rep_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="third_yr_rep_id">Third Year Representative:</label><br>
+        <input type="text" name="third_yr_rep_id1" id="third_yr_rep_id1" placeholder="Enter Student Number" required>
+        <span id="third_yr_rep_name_1"></span>
+        <span id="third_yr_rep_course_1"></span><br>
+
+        <input type="text" name="third_yr_rep_id2" id="third_yr_rep_id2" placeholder="Enter Student Number">
+        <span id="third_yr_rep_name_2"></span>
+        <span id="third_yr_rep_course_2"></span><br>
+
+        <input type="text" name="third_yr_rep_id3" id="third_yr_rep_id3" placeholder="Enter Student Number">
+        <span id="third_yr_rep_name_3"></span>
+        <span id="third_yr_rep_course_3"></span><br>
+
+        <input type="text" name="third_yr_rep_id4" id="third_yr_rep_id4" placeholder="Enter Student Number">
+        <span id="third_yr_rep_name_4"></span>
+        <span id="third_yr_rep_course_4"></span>
+      </div>
+      <br>
+
+      <div>
+        <label for="fourth_yr_rep_id">Fourth Year Representative:</label><br>
+        <input type="text" name="fourth_yr_rep_id1" id="fourth_yr_rep_id1" placeholder="Enter Student Number" required>
+        <span id="fourth_yr_rep_name_1"></span>
+        <span id="fourth_yr_rep_course_1"></span><br>
+
+        <input type="text" name="fourth_yr_rep_id2" id="fourth_yr_rep_id2" placeholder="Enter Student Number">
+        <span id="fourth_yr_rep_name_2"></span>
+        <span id="fourth_yr_rep_course_2"></span><br>
+
+        <input type="text" name="fourth_yr_rep_id3" id="fourth_yr_rep_id3" placeholder="Enter Student Number">
+        <span id="fourth_yr_rep_name_3"></span>
+        <span id="fourth_yr_rep_course_3"></span><br>
+
+        <input type="text" name="fourth_yr_rep_id4" id="fourth_yr_rep_id4" placeholder="Enter Student Number">
+        <span id="fourth_yr_rep_name_4"></span>
+        <span id="fourth_yr_rep_course_4"></span>
+      </div>
+      <br>
+      
+
+      <button type="submit">Submit</button>
+    </form>
+
+</div>
+  {% endblock %}

@@ -1,0 +1,298 @@
+body{
+    background-image: url('Background.jpg');
+    background-size: cover;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.student-button {
+    text-align: center;
+    margin-top: 255px;
+
+}
+.admin-button{
+    text-align: center;
+    margin-top: 10px;
+}
+
+.user-type-btn1 {
+    background-color: #7D0000;
+    color: yellow;
+    font-size:20px;
+    padding: 20px 80px;
+    border-color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.user-type-btn1:hover {
+    background-color: #7D0000;
+    color: white;
+}
+.user-type-btn2 {
+    background-color: #7D0000;
+    color: #FFEC00;
+    font-size:20px;
+    padding: 20px 95px;
+    border-color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.user-type-btn2:hover {
+    background-color: #7D0000;
+    color: white;
+
+}
+
+.login-container {
+    width: 300px;
+    margin: 100px auto; 
+    margin-top: 150px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container img {
+    max-width: 300px; 
+    margin-bottom: -60px; 
+    margin-top: -120px;
+}
+
+h2 {
+    text-align: center;
+    color: #7D0000;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+button {
+    background-color: #7D0000;
+    color: yellow;
+    font-size: 16px;
+    padding: 10px 132px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: 7D0000;
+    color: white;
+    border-radius: 20px;
+}
+header {
+    background-color: #7D0000;
+    color: white;
+    text-align: center;
+    padding: 1px;
+}
+
+nav {
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; 
+    justify-content: space-between; 
+}
+
+nav li {
+    
+    flex: 1; 
+
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 25px;
+    
+}
+
+nav a:hover {
+
+    color: yellow;
+}
+
+main {
+    margin: 20px;
+}
+
+
+.timeline {
+    max-width: 600px;
+    margin: 50px auto;
+}
+
+.timeline-item {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.centered-icon {
+    text-align: center;
+}
+
+.centered-icon img {
+    width: 280px; 
+    border-radius: 50%;
+    margin-top: -60px;
+    margin-bottom: -65px;
+    
+}
+
+.timeline-text {
+    margin-top: 15px;
+}
+.options-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.option {
+    margin-left: 10px;
+    padding: 5px;
+    background-color: #7D0000; 
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background-color: #ffd30f;
+    color: #7D0000;
+}
+
+.add-post-section {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 30px;
+   /* margin: 20px; */
+    display: flex;
+    align-items: center;
+    max-width: 545px;
+    margin: 50px auto;
+}
+
+.add-post-section .options-icon {
+    margin-top: 124px;
+    margin-right: 370px;
+}
+
+.add-post-section .option {
+    padding: 5px;
+    background-color: #7D0000; 
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.add-post-section .option:hover {
+    background-color: #ffd30f;
+    color: #7D0000;
+}
+
+.add-post-text {
+    margin: 0;
+    font-weight: bold;
+}
+
+.account-container {
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+.account-icon {
+    font-size: 250px;
+    color: #7D0000;
+    margin-bottom: -15px;
+    margin-top: 10px;
+}
+
+.student-number {
+    color: #7D0000;
+    font-size: 20px;
+    
+}
+
+.account-name {
+    color: #7D0000;
+    font-size: 20px;
+    
+
+}
+
+.logout-button {
+    background-color: #7D0000;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.logout-button:hover {
+    background-color: #ffd30f;
+    color: #7D0000;
+}
+#options {
+    display: none;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#options button {
+    background-color: #7D0000;
+    color: white;
+    font-size: 16px;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+#options button:hover {
+    background-color: #ffd30f;
+    color: #7D0000;
+}

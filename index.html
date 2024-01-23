@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Login Form</title>
+</head>
+<body>
+
+    <div class="button-container">
+        <div class="student-button">
+            <button class="user-type-btn1" onclick="showOptions()">STUDENT</button>
+        </div>
+        
+        <div id="options" style="display: none;">
+            <button onclick="redirectTo('CandidateLoginForm.html')">Candidate</button>
+            <button onclick="redirectTo('VoterLoginForm.html')">Voter</button>
+        </div>
+        
+
+        <div class="admin-button">
+            <button class="user-type-btn2" onclick="redirectTo('AdminLoginForm.html')"> ADMIN </button>
+        </div>
+
+        <script>
+            function showOptions() {
+                // Show the options div
+                document.getElementById('options').style.display = 'block';
+            }
+        
+            function redirectTo(targetPage) {
+                // Redirect to the selected page
+                window.location.href = targetPage;
+            }
+        </script>
+
+    </div>
+       
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}List of Ballot{% endblock %} {%block content%}
+<div class="container">
+    <h2>List of Ballots</h2>
+    <a href="/"><button>Back</button></a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ballot ID</th>
+                <th>Ballot Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ballot in ballots %}
+                <tr>
+                    <td>{{ ballot.id }}</td>
+                    <td>{{ ballot.ballot_name }}</td>
+                    <td>{{ 'Open' if ballot.ballot_status and ballot.ballot_status.isOpen else 'Closed' }}</td>
+                    <td>
+                        <a href="{{ url_for('views.edit_ballot', ballot_id=ballot.id) }}">
+                            <button>Edit</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block title %}Edit Ballot{% endblock %}{% block content %}
+<div class="container">
+    <h4>Edit Ballot</h4>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'success' and message == 'Candidate added successfully!' %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    <h3>Ballot name: {{ ballot.ballot_name }}</h3>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Position</th>
+            <th>Student ID</th>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Action</th>
+        </tr>
+        {% for candidate in candidates %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ get_full_position_name(candidate.position) }}</td>
+                <td>{{ candidate.studentId }}</td>
+                <td>{{ candidate.student_name }}</td>
+                <td>{{ candidate.student_course }}</td>
+                <td>
+                    <a href="{{ url_for('views.delete_candidate', ballot_id=ballot.id, candidate_id=candidate.id) }}"><button>Delete</button></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table><br>
+
+    <h4>Add Candidate</h4>
+    <form method="post" action="{{ url_for('views.add_candidate', ballot_id=ballot.id) }}">
+        <label for="position">Position:</label>
+        <select id="position" name="position" required>
+            <option value="president">President</option>
+            <option value="vice_president">Vice President</option>
+            <option value="executive_board_sec">Executive Board Secretary</option>
+            <option value="vp_finance">Vice President of Finance</option>
+            <option value="vp_academic_affairs">Vice President of Academic Affairs</option>
+            <option value="vp_internal_external_affairs">Vice President of Internal and External Affairs</option>
+            <option value="vp_public_relations">Vice President of Public Relations</option>
+            <option value="vp_research_dev">Vice President of Research and Development</option>
+            <option value="first_yr_rep">First Year Representative</option>
+            <option value="second_yr_rep">Second Year Representative</option>
+            <option value="third_yr_rep">Third Year Representative</option>
+            <option value="fourth_yr_rep">Fourth Year Representative</option>
+        </select><br>
+
+        <label for="studentId">Student ID:</label>
+        <input type="text" id="studentId" name="studentId" required>
+
+        <span id="candidateName"></span>
+        <span id="candidateCourse"></span><br>
+
+        <input type="submit" value="Add Candidate">
+    </form><br><br>
+
+    <a href="{{ url_for('views.toggle_ballot_status', ballot_id=ballot.id) }}">
+        <button>{{ 'Close Ballot' if ballot.ballot_status and ballot.ballot_status.isOpen else 'Open Ballot' }}</button>
+    </a><br>
+
+    <a href="{{ url_for('views.delete_ballot', ballot_id=ballot.id) }}">
+        <button>Delete Ballot</button>
+    </a><br>
+
+    <a href="{{ url_for('views.list_ballots') }}"><button>Back</button></a>
+</div>
+{% endblock %}
+
+{% macro get_full_position_name(position) %}
+    {% set position_names = {
+        'president': 'President',
+        'vice_president': 'Vice President',
+        'executive_board_sec': 'Executive Board Secretary',
+        'vp_finance': 'Vice President of Finance',
+        'vp_academic_affairs': 'Vice President of Academic Affairs',
+        'vp_internal_external_affairs': 'Vice President of Internal and External Affairs',
+        'vp_public_relations': 'Vice President of Public Relations',
+        'vp_research_dev': 'Vice President of Research and Development',
+        'first_yr_rep': 'First Year Representative',
+        'second_yr_rep': 'Second Year Representative',
+        'third_yr_rep': 'Third Year Representative',
+        'fourth_yr_rep': 'Fourth Year Representative'
+    } %}
+    
+    {{ position_names[position] }}
+{% endmacro %}

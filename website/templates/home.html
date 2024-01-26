@@ -3,6 +3,7 @@
 <a href="/logout">Logout</a>
 {% if user.userType == "Admin" %}
 <a href="/create-ballot">Create Ballot</a>
+<a href="/ballots">List Ballots</a>
 {% endif %}
 {% if user.userType == "Student" %}
 <a href="/vote">Vote</a>

@@ -1,0 +1,201 @@
+{% extends "base.html" %} {% block title %}Create Ballot{% endblock %} {%block content%}
+<div class="container">
+    <h2>Create Ballot</h2>
+    <a href="/"><button>Back</button></a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == 'success' and message == 'Ballot created successfully!' %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <form method="post" action="/create-ballot" id="createBallotForm">
+
+    <br>
+    <div>
+        <label for="ballot_name">Ballot Name:</label><br>
+        <input type="text" name="ballot_name" id="ballot_name" placeholder="Enter Ballot Name" required>
+    </div>
+   
+
+    <h3>Candidates</h3>
+    
+      <div>
+        <label for="president_id">President:</label><br>
+        <input type="text" name="president_id1" id="president_id1" placeholder="Enter Student Number" required>
+        <span id="president_name_1"></span>
+        <span id="president_course_1"></span><br>
+
+          {% for i in range(2, 4) %}
+            <input type="text" name="president_id{{ i }}" id="president_id{{ i }}" placeholder="Enter Student Number">
+            <span id="president_name_{{ i }}"></span>
+            <span id="president_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="vice_president_id">Vice President:</label><br>
+        <input type="text" name="vice_president_id1" id="vice_president_id1" placeholder="Enter Student Number" required>
+        <span id="vice_president_name_1"></span>
+        <span id="vice_president_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="vice_president_id{{ i }}" id="vice_president_id{{ i }}" placeholder="Enter Student Number">
+            <span id="vice_president_name_{{ i }}"></span>
+            <span id="vice_president_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="executive_board_sec_id">Executive Board Secretary:</label><br>
+        <input type="text" name="executive_board_sec_id1" id="executive_board_sec_id1" placeholder="Enter Student Number" required>
+        <span id="executive_board_sec_name_1"></span>
+        <span id="executive_board_sec_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="executive_board_sec_id{{ i }}" id="executive_board_sec_id{{ i }}" placeholder="Enter Student Number">
+            <span id="executive_board_sec_name_{{ i }}"></span>
+            <span id="executive_board_sec_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="vp_finance_id">Vice President of Finance:</label><br>
+        <input type="text" name="vp_finance_id1" id="vp_finance_id1" placeholder="Enter Student Number" checked required>
+        <span id="vp_finance_name_1"></span>
+        <span id="vp_finance_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="vp_finance_id{{ i }}" id="vp_finance_id{{ i }}" placeholder="Enter Student Number">
+            <span id="vp_finance_name_{{ i }}"></span>
+            <span id="vp_finance_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="vp_academic_affairs_id">Vice President of Academic Affairs:</label><br>
+        <input type="text" name="vp_academic_affairs_id1" id="vp_academic_affairs_id1" placeholder="Enter Student Number" required>
+        <span id="vp_academic_affairs_name_1"></span>
+        <span id="vp_academic_affairs_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="vp_academic_affairs_id{{ i }}" id="vp_academic_affairs_id{{ i }}" placeholder="Enter Student Number">
+            <span id="vp_academic_affairs_name_{{ i }}"></span>
+            <span id="vp_academic_affairs_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="vp_internal_external_affairs_id">Vice President of Internal and External Affairs:</label><br>
+        <input type="text" name="vp_internal_external_affairs_id1" id="vp_internal_external_affairs_id1" placeholder="Enter Student Number" required>
+        <span id="vp_internal_external_affairs_name_1"></span>
+        <span id="vp_internal_external_affairs_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="vp_internal_external_affairs_id{{ i }}" id="vp_internal_external_affairs_id{{ i }}" placeholder="Enter Student Number">
+            <span id="vp_internal_external_affairs_name_{{ i }}"></span>
+            <span id="vp_internal_external_affairs_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="vp_public_relations_id">Vice President of Public Relations:</label><br>
+        <input type="text" name="vp_public_relations_id1" id="vp_public_relations_id1" placeholder="Enter Student Number" required>
+        <span id="vp_public_relations_name_1"></span>
+        <span id="vp_public_relations_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="vp_public_relations_id{{ i }}" id="vp_public_relations_id{{ i }}" placeholder="Enter Student Number">
+            <span id="vp_public_relations_name_{{ i }}"></span>
+            <span id="vp_public_relations_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="vp_research_dev_id">Vice President of Research and Development:</label><br>
+        <input type="text" name="vp_research_dev_id1" id="vp_research_dev_id1" placeholder="Enter Student Number" required>
+        <span id="vp_research_dev_name_1"></span>
+        <span id="vp_research_dev_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="vp_research_dev_id{{ i }}" id="vp_research_dev_id{{ i }}" placeholder="Enter Student Number">
+            <span id="vp_research_dev_name_{{ i }}"></span>
+            <span id="vp_research_dev_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="first_yr_rep_id">First Year Representative:</label><br>
+        <input type="text" name="first_yr_rep_id1" id="first_yr_rep_id1" placeholder="Enter Student Number" required>
+        <span id="first_yr_rep_name_1"></span>
+        <span id="first_yr_rep_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="first_yr_rep_id{{ i }}" id="first_yr_rep_id{{ i }}" placeholder="Enter Student Number">
+            <span id="first_yr_rep_name_{{ i }}"></span>
+            <span id="first_yr_rep_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="second_yr_rep_id">Second Year Representative:</label><br>
+        <input type="text" name="second_yr_rep_id1" id="second_yr_rep_id1" placeholder="Enter Student Number" required>
+        <span id="second_yr_rep_name_1"></span>
+        <span id="second_yr_rep_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="second_yr_rep_id{{ i }}" id="second_yr_rep_id{{ i }}" placeholder="Enter Student Number">
+            <span id="second_yr_rep_name_{{ i }}"></span>
+            <span id="second_yr_rep_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="third_yr_rep_id">Third Year Representative:</label><br>
+        <input type="text" name="third_yr_rep_id1" id="third_yr_rep_id1" placeholder="Enter Student Number" required>
+        <span id="third_yr_rep_name_1"></span>
+        <span id="third_yr_rep_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="third_yr_rep_id{{ i }}" id="third_yr_rep_id{{ i }}" placeholder="Enter Student Number">
+            <span id="third_yr_rep_name_{{ i }}"></span>
+            <span id="third_yr_rep_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+
+      <div>
+        <label for="fourth_yr_rep_id">Fourth Year Representative:</label><br>
+        <input type="text" name="fourth_yr_rep_id1" id="fourth_yr_rep_id1" placeholder="Enter Student Number" required>
+        <span id="fourth_yr_rep_name_1"></span>
+        <span id="fourth_yr_rep_course_1"></span><br>
+
+        {% for i in range(2, 4) %}
+            <input type="text" name="fourth_yr_rep_id{{ i }}" id="fourth_yr_rep_id{{ i }}" placeholder="Enter Student Number">
+            <span id="fourth_yr_rep_name_{{ i }}"></span>
+            <span id="fourth_yr_rep_course_{{ i }}"></span><br>
+          {% endfor %}
+      </div>
+      <br>
+      
+
+      <button type="submit">Submit</button>
+    </form>
+
+</div>
+  {% endblock %}

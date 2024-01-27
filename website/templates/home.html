@@ -1,6 +1,10 @@
 <!-- election is now closed -->
 {% extends "base.html" %} {% block title %}Home{% endblock %} {%block content%}
 <a href="/logout">Logout</a>
+{% if user.userType == "Admin" %}
+<a href="/create-ballot">Create Ballot</a>
+<a href="/ballots">List Ballots</a>
+{% endif %}
 {% if user.userType == "Student" %}
 <a href="/vote">Vote</a>
 {% endif %} {% endblock %}

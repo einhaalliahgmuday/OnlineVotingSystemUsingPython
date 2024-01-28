@@ -1,53 +1,152 @@
 from sqlite3 import IntegrityError
 from flask import Blueprint, redirect, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-import json
-from . import db
-from . import models
+# import json
+from . import db, models, socketio
 
 views = Blueprint('views', __name__)
 
 @views.route('/')
 @login_required
 def home():
-    return render_template('home.html', user=current_user)
+    isCandidate = False
 
-@views.route('/select-user-type')
-def selectUserType():
-    return render_template('select-user-type.html')
+    for candidate in models.Candidate.query.all():
+        if current_user.userId == candidate.studentId:
+            isCandidate = True
+            break
+
+    if current_user.userType == "Admin":
+        return render_template('Admin_Timeline.html')
+    elif current_user.userType == "Student" and isCandidate == True:
+        return render_template('Candidate_Timeline.html')
+    elif current_user.userType == "Student" and isCandidate == False:
+        return render_template('Voter_Timeline.html')
+    
+@views.route('/settings')
+@login_required
+def settings():
+    if current_user.userType == "Admin":
+        return render_template('Admin_Settings.html', user=current_user)
+    elif current_user.userType == "Student":
+        return render_template('Student_Settings.html', user=current_user)
 
 @views.route('/vote', methods=['GET', 'POST'])
 @login_required
 def vote():
     if request.method == 'POST':
+        formData = request.form.to_dict()
         voter = current_user.userId
-        president = request.form.get('president')
-        vice_president = request.form.get('vice_president')
-        executive_board_sec = request.form.get('executive_board_sec')
-        vp_finance = request.form.get('vp_finance')
-        vp_academic_affairs = request.form.get('vp_academic_affairs')
-        vp_internal_external_affairs = request.form.get('vp_internal_external_affairs')
-        vp_public_relations = request.form.get('vp_public_relations')
-        vp_research_dev = request.form.get('vp_research_dev')
-        first_yr_rep = request.form.get('first_yr_rep')
-        second_yr_rep = request.form.get('second_yr_rep')
-        third_yr_rep = request.form.get('third_yr_rep')
-        fourth_yr_rep = request.form.get('fourth_yr_rep')
-          
-        if (president == None or vice_president == None or executive_board_sec == None or vp_finance == None or 
-            vp_academic_affairs == None or vp_internal_external_affairs == None or vp_public_relations == None or vp_research_dev == None or 
-            first_yr_rep == None or second_yr_rep == None or third_yr_rep == None or fourth_yr_rep == None):
-            flash('Please fill in all fields.', category="error")
-        else:
-            vote = models.Vote(voter=voter, president=president, vice_president=vice_president, executive_board_sec=executive_board_sec,
-                               vp_finance=vp_finance, vp_academic_affairs=vp_academic_affairs, vp_internal_external_affairs=vp_internal_external_affairs,
-                               vp_public_relations=vp_public_relations, vp_research_dev=vp_research_dev, first_yr_rep=first_yr_rep,
-                               second_yr_rep=second_yr_rep, third_yr_rep=third_yr_rep, fourth_yr_rep=fourth_yr_rep)
-            db.session.add(vote)
+
+        vote = models.Vote(**formData, voter=voter)
+        
+        db.session.add(vote)
+
+        try:
             db.session.commit()
             flash('Your vote is counted.', category="success")
 
+            socketio.emit('vote', getCandidates(), broadcast=True)
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error during data insertion: {e}")
+
     return render_template('vote.html')
+
+@views.route('/live-results')
+@login_required
+def liveResults():
+    candidates = getCandidates()
+    # votes = models.Vote.query.all()
+    socketio.emit('vote', getCandidates(), room=None)
+    return render_template("LiveResult.html", candidates=candidates)
+
+def getCandidateVoteCount(position, studentId):
+    # voteCount = 0
+
+    voteCount = models.Vote.query.filter(getattr(models.Vote, position) == studentId).count()
+
+    # votes = models.Vote.query.all()
+    # for vote in votes:
+    #     voted = getattr(vote, position)
+    #     if voted == studentId:
+    #         voteCount += 1
+
+    return voteCount
+
+# @socketio.on('vote')
+# def handle_vote(data):
+#     print(f"Received a vote: {data}")
+
+def serializeCandidate(candidate):
+    return {
+        'studentId': candidate.studentId,
+        'name': candidate.name,
+        'position': candidate.position,
+        'voteCount': candidate.voteCount,
+    }
+
+
+def getCandidates():
+    candidates = {"president": [],
+                  "executive_vp": [],
+                  "executive_board_sec": [],
+                  "vp_finance": [],
+                  "vp_academic_affairs": [],
+                  "vp_internal_affairs": [],
+                  "vp_external_affairs": [],
+                  "vp_public_relations": [],
+                  "vp_research_dev": [],
+                  "first_yr_rep": [],
+                  "second_yr_rep": [],
+                  "third_yr_rep": [],
+                  "fourth_yr_rep": []}
+
+    dbCandidates = models.Candidate.query.all()
+    
+    for candidate in dbCandidates:
+        if candidate.position == "president":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['president'].append(serializeCandidate(candidate))
+        elif candidate.position == "executive_vp":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['executive_vp'].append(serializeCandidate(candidate))
+        elif candidate.position == "executive_board_sec":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['executive_board_sec'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_finance":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['vp_finance'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_academic_affairs":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['vp_academic_affairs'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_internal_affairs":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['vp_internal_affairs'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_external_affairs":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['vp_external_affairs'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_public_relations":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['vp_public_relations'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_research_dev":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['vp_research_dev'].append(serializeCandidate(candidate))
+        elif candidate.position == "first_yr_rep":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['first_yr_rep'].append(serializeCandidate(candidate))
+        elif candidate.position == "second_yr_rep":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['second_yr_rep'].append(serializeCandidate(candidate))
+        elif candidate.position == "third_yr_rep":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['third_yr_rep'].append(serializeCandidate(candidate))
+        elif candidate.position == "fourth_yr_rep":
+            candidate.voteCount = getCandidateVoteCount(candidate.position, candidate.studentId)
+            candidates['fourth_yr_rep'].append(serializeCandidate(candidate))
+    
+    return candidates
+
 
 @views.route('/create-ballot', methods=['GET', 'POST'])
 @login_required

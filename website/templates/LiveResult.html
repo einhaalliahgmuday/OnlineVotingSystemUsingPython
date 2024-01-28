@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/VoteNowStyle.css">
+    <title>Live Result</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Timeline</a></li>
+                <li><a href="/vote-now">Vote Now</a></li>
+                <li><a href="/live-results">Live Result</a></li>
+                <li><a href="/settings">Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="live-result-container">
+        <h1>CENTRAL STUDENT COUNCIL (2024-2025) </h1>
+        <div class="live-time">
+            <p>As of <time datetime="" id="liveTime"></time></p>
+        </div>
+        {% if not candidates["president"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>PRESIDENT</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["executive_vp"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>EXECUTIVE VICE PRESIDENT</h2>
+                {% for candidate in candidates["executive_vp"] %}
+                <div class="result-bar">
+                    <span class="candidate-name" id="{{candidate['name']}}">{{candidate['name']}}</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if not candidates["executive_board_sec"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>EXECUTIVE BOARD SECRETARY</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["vp_finance"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>VICE PRESIDENT FOR FINANCE</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["vp_academic_affairs"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>VICE PRESIDENT FOR ACADEMIC AFFAIRS</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["vp_internal_affairs"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>VICE PRESIDENT FOR INTERNAL AFFAIRS</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["vp_external_affairs"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>VICE PRESIDENT FOR EXTERNAL AFFAIRS</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["vp_public_relations"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>VICE PRESIDENT FOR PUBLIC RELATIONS</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["vp_research_dev"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>VICE PRESIDENT FOR RESEARCH AND DEVELOPMENT</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["first_yr_rep"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>FIRST YEAR REPRESENTATIVE</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["second_yr_rep"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>SECOND YEAR REPRESENTATIVE</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["third_yr_rep"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>THIRD YEAR REPRESENTATIVE</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not candidates["third_yr_rep"]|length <= 0 %}
+        <div class="live-result-graph">
+            <h2>FOURTH YEAR REPRESENTATIVE</h2>
+                <div class="result-bar">
+                    <span>Candidate 1</span>
+                    <div class="bar" id="Candidate1Bar" style="width: 40%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 2</span>
+                    <div class="bar" id="Candidate2Bar" style="width: 30%;"></div>
+                </div>
+                <div class="result-bar">
+                    <span>Candidate 3</span>
+                    <div class="bar" id="abstainBar" style="width: 30%;"></div>
+                </div>
+            </div>
+        {% endif %}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
+
+    <script>
+        // Simulate real-time updates every 5 seconds
+        // setInterval(function () {
+        //     // Update percentages with simulated data
+        //     // document.getElementById('Candidate1Bar').style.width = Math.floor(Math.random() * 100) + '%';
+        //     // document.getElementById('Candidate2Bar').style.width = Math.floor(Math.random() * 100) + '%';
+        //     // document.getElementById('abstainBar').style.width = Math.floor(Math.random() * 100) + '%';
+
+        //     // Update real-time date and time
+        //     document.getElementById('liveTime').textContent = new Date().toLocaleString();
+        // }, 5000);
+
+        // Initial update on page load
+        // document.getElementById('liveTime').textContent = new Date().toLocaleString();
+
+        console.log("hello")
+        // Connect to the Socket.IO server
+        var socket = io.connect('http://127.0.0.1:5000');
+
+        // Listen for the 'vote' event
+        socket.on('vote', function(data) {
+            console.log(data);
+        });
+    </script>
+
+</body>
+
+</html>

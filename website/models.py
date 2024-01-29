@@ -21,6 +21,7 @@ class Candidate(db.Model):
     name = db.Column(db.String(200), nullable=False)
     position = db.Column(db.String(100), nullable=False)
     voteCount = None
+    votePercentage = None
     # ballot_id = db.Column(db.Integer, db.ForeignKey('ballot.id'), nullable=False)
     student = db.relationship('User', backref='candidate', lazy=True)
 

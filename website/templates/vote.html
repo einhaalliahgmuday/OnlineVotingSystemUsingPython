@@ -1,11 +1,16 @@
 <!-- election is now closed -->
 {% extends "base.html" %} {% block title %}Vote{% endblock %} {%block content%}
-<form action="/vote" method="post">
+<form action="/vote-now" method="post">
   <label for="president">President:</label>
-  <input type="radio" id="president1" name="president" value="candidate1" />
-  Candidate 1
-  <input type="radio" id="president2" name="president" value="candidate2" />
-  Candidate 2
+  <input type="radio" id="president1" name="president" value="abstain" />
+  Abstain
+  <input
+    type="radio"
+    id="president2"
+    name="president"
+    value="2021-00111-BN-0"
+  />
+  JM Dinglasan
 
   <br />
 
@@ -13,14 +18,14 @@
   <input
     type="radio"
     id="vice_president1"
-    name="vice_president"
+    name="executive_vp"
     value="candidate1"
   />
   Candidate 1
   <input
     type="radio"
     id="vice_president2"
-    name="vice_president"
+    name="executive_vp"
     value="candidate2"
   />
   Candidate 2
@@ -77,14 +82,34 @@
   <input
     type="radio"
     id="vp_internal_external_affairs1"
-    name="vp_internal_external_affairs"
+    name="vp_internal_affairs"
     value="candidate1"
   />
   Candidate 1
   <input
     type="radio"
     id="vp_internal_external_affairs2"
-    name="vp_internal_external_affairs"
+    name="vp_internal_affairs"
+    value="candidate2"
+  />
+  Candidate 2
+
+  <br />
+
+  <label for="vp_internal_external_affairs"
+    >Vice President of Internal and External Affairs:</label
+  >
+  <input
+    type="radio"
+    id="vp_internal_external_affairs1"
+    name="vp_external_affairs"
+    value="candidate1"
+  />
+  Candidate 1
+  <input
+    type="radio"
+    id="vp_external_affairs2"
+    name="vp_external_affairs"
     value="candidate2"
   />
   Candidate 2

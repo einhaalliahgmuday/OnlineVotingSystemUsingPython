@@ -6,580 +6,420 @@
     <link rel="stylesheet" href="../static/styles/VoteNowStyle.css" />
     <title>Vote Now</title>
   </head>
-
   <body>
     <header>
       <nav>
         <ul>
           <li><a href="/">Timeline</a></li>
-          <li><a href="/vote">Vote Now</a></li>
+          <li><a href="/vote-now">Vote Now</a></li>
           <li><a href="/live-results">Live Result</a></li>
           <li><a href="/settings">Settings</a></li>
         </ul>
       </nav>
     </header>
-
-    <!-- for each candidate in candidates, if position == president, option siya -->
-    <!-- how to know if there are presidents -->
-
-    <div class="vote-form">
-      <h2>PRESIDENT</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="salma-fae"
-              name="president"
-              value="Salma Fae"
-            />
-            <label>Salma Fae</label>
-          </li>
-          <li>
-            <input type="radio" id="marcos" name="president" value="Marcos" />
-            <label>Marcos</label>
-          </li>
-          <li>
-            <input type="radio" id="abstain" name="president" value="Abstain" />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>EXECUTIVE VICE PRESIDENT</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>EXECUTIVE BOARD SECRETARY</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>VICE PRESIDENT FOR FINANCE</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>VICE PRESIDENT FOR ACADEMIC AFFAIRS</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>VICE PRESIDENT FOR INTERNAL AFFAIRS</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>VICE PRESIDENT FOR EXTERNAL AFFAIRS</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>VICE PRESIDENT FOR PUBLIC RELATIONS</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>VICE PRESIDENT FOR RESEARCH AND DEVELOPMENT</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>FIRST YEAR REPRESENTATIVE</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>SECOND YEAR REPRESENTATIVE</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>THIRD YEAR REPRESENTATIVE</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-
-    <div class="vote-form">
-      <h2>FOURTH YEAR REPRESENTATIVE</h2>
-      <form action="submit_vote.php" method="post">
-        <ul class="vote-options">
-          <li>
-            <input
-              type="radio"
-              id="Candidate"
-              name="vice president"
-              value="cndt1"
-            />
-            <label>Candidate 1</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate2"
-              name="vice president"
-              value="cndt2"
-            />
-            <label>Candidate 2</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate3"
-              name="vice president"
-              value="candt3"
-            />
-            <label>Candidate 3</label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="Candidate4"
-              name="vice president"
-              value="candt4"
-            />
-            <label>Abstain</label>
-          </li>
-        </ul>
-      </form>
-    </div>
-    <h4>
-      <i
-        >Make sure to review your form before submiting Iskolars. Vote
-        Wisely!</i
-      >
-    </h4>
-    <button type="submit">SUBMIT VOTE</button>
+    <main>
+      <div>
+        <form method="POST">
+          {% if not candidates["president"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>PRESIDENT</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["president"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="president"
+                  value="{{candidate.studentId}}"
+                  id="president-{{candidate.studentId}}"
+                  required
+                />
+                <label for="president-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="president-abstain"
+                  name="president"
+                  value="abstain"
+                  required
+                />
+                <label for="president-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["executive_vp"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Executive Vice President</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["executive_vp"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="executive_vp"
+                  value="{{candidate.studentId}}"
+                  id="executive-vp-{{candidate.studentId}}"
+                  required
+                />
+                <label for="executive-vp-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="executive-vp-abstain"
+                  name="executive_vp"
+                  value="abstain"
+                  required
+                />
+                <label for="executive-vp-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["executive_board_sec"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Executive Board Secretary</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["executive_board_sec"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="executive_board_sec"
+                  value="{{candidate.studentId}}"
+                  id="executive-board-sec-{{candidate.studentId}}"
+                  required
+                />
+                <label for="executive-board-sec-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="executive-board-sec-abstain"
+                  name="executive_board_sec"
+                  value="abstain"
+                  required
+                />
+                <label for="executive-board-sec-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["vp_finance"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Vice President For Finance</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["vp_finance"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="vp_finance"
+                  value="{{candidate.studentId}}"
+                  id="vp-finance-{{candidate.studentId}}"
+                  required
+                />
+                <label for="vp-finance-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="vp-finance-abstain"
+                  name="vp_finance"
+                  value="abstain"
+                  required
+                />
+                <label for="vp-finance-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["vp_academic_affairs"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Vice President For Academic Affairs</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["vp_academic_affairs"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="vp_academic_affairs"
+                  value="{{candidate.studentId}}"
+                  id="vp-academic-affairs-{{candidate.studentId}}"
+                  required
+                />
+                <label for="vp-academic-affairs-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="vp-academic-affairs-abstain"
+                  name="vp_academic_affairs"
+                  value="abstain"
+                  required
+                />
+                <label for="vp-academic-affairs-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["vp_internal_affairs"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Vice President For Internal Affairs</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["vp_internal_affairs"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="vp_internal_affairs"
+                  value="{{candidate.studentId}}"
+                  id="vp-internal-affairs-{{candidate.studentId}}"
+                  required
+                />
+                <label for="vp-internal-affairs-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="vp-internal-affairs-abstain"
+                  name="vp_internal_affairs"
+                  value="abstain"
+                  required
+                />
+                <label for="vp-internal-affairs-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["vp_external_affairs"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Vice President For External Affairs</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["vp_external_affairs"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="vp_external_affairs"
+                  value="{{candidate.studentId}}"
+                  id="vp-external-affairs-{{candidate.studentId}}"
+                  required
+                />
+                <label for="vp-external-affairs-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="vp-external-affairs-abstain"
+                  name="vp_external_affairs"
+                  value="abstain"
+                  required
+                />
+                <label for="vp-external-affairs-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["vp_public_relations"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Vice President For Public Relations</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["vp_public_relations"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="vp_public_relations"
+                  value="{{candidate.studentId}}"
+                  id="vp-public-relations-{{candidate.studentId}}"
+                  required
+                />
+                <label for="vp-public-relations-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="vp-public-relations-abstain"
+                  name="vp_public_relations"
+                  value="abstain"
+                  required
+                />
+                <label for="vp-public-relations-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["vp_research_dev"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Vice President For Research and Development</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["vp_research_dev"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="vp_research_dev"
+                  value="{{candidate.studentId}}"
+                  id="vp-research-dev-{{candidate.studentId}}"
+                  required
+                />
+                <label for="vp-research-dev-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="vp-research-dev-abstain"
+                  name="vp_research_dev"
+                  value="abstain"
+                  required
+                />
+                <label for="vp-research-dev-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %}{% if not candidates["first_yr_rep"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>First Year Representative</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["first_yr_rep"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="first_yr_rep"
+                  value="{{candidate.studentId}}"
+                  id="first-yr-rep-{{candidate.studentId}}"
+                  required
+                />
+                <label for="first-yr-rep-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="first-yr-rep-abstain"
+                  name="first_yr_rep"
+                  value="abstain"
+                  required
+                />
+                <label for="first-yr-rep-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["second_yr_rep"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Second Year Representative</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["second_yr_rep"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="second_yr_rep"
+                  value="{{candidate.studentId}}"
+                  id="second-yr-rep-{{candidate.studentId}}"
+                  required
+                />
+                <label for="second-yr-rep-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="second-yr-rep-abstain"
+                  name="second_yr_rep"
+                  value="abstain"
+                  required
+                />
+                <label for="second-yr-rep-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["third_yr_rep"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Third Year Representative</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["third_yr_rep"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="third_yr_rep"
+                  value="{{candidate.studentId}}"
+                  id="third-yr-rep-{{candidate.studentId}}"
+                  required
+                />
+                <label for="third-yr-rep-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="third-yr-rep-abstain"
+                  name="third_yr_rep"
+                  value="abstain"
+                  required
+                />
+                <label for="third-yr-rep-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %} {% if not candidates["fourth_yr_rep"]|length <= 0 %}
+          <div class="vote-form">
+            <h2>Fourth Year Representative</h2>
+            <ul class="vote-options">
+              {% for candidate in candidates["fourth_yr_rep"] %}
+              <li>
+                <input
+                  type="radio"
+                  name="fourth_yr_rep"
+                  value="{{candidate.studentId}}"
+                  id="fourth-yr-rep-{{candidate.studentId}}"
+                  required
+                />
+                <label for="fourth-yr-rep-{{candidate.studentId}}"
+                  >{{candidate.name}}</label
+                >
+              </li>
+              {% endfor %}
+              <li>
+                <input
+                  type="radio"
+                  id="fourth-yr-rep-abstain"
+                  name="fourth_yr_rep"
+                  value="abstain"
+                  required
+                />
+                <label for="fourth-yr-rep-abstain">Abstain</label>
+              </li>
+            </ul>
+          </div>
+          {% endif %}
+          <h4>
+            <i
+              >Make sure to review your form before submiting Iskolars. Vote
+              Wisely!</i
+            >
+          </h4>
+          <button type="submit">SUBMIT VOTE</button>
+        </form>
+      </div>
+    </main>
   </body>
 </html>

@@ -50,13 +50,66 @@ def vote():
             db.session.rollback()
             print(f"Error during data insertion: {e}")
 
-    return render_template('vote.html')
+    return render_template('VoteNow.html', candidates=getCandidates())
 
 @views.route('/live-results')
 @login_required
 def liveResults():
-    voteResults = getVoteResults()
-    return render_template("LiveResult.html", voteResults=voteResults)
+    return render_template("LiveResult.html", voteResults=getVoteResults())
+
+def serializeCandidate(candidate):
+    return {
+        'studentId': candidate.studentId,
+        'name': candidate.name,
+        'position': candidate.position
+    }
+
+def getCandidates():
+    candidates = {"president": [],
+                  "executive_vp": [],
+                  "executive_board_sec": [],
+                  "vp_finance": [],
+                  "vp_academic_affairs": [],
+                  "vp_internal_affairs": [],
+                  "vp_external_affairs": [],
+                  "vp_public_relations": [],
+                  "vp_research_dev": [],
+                  "first_yr_rep": [],
+                  "second_yr_rep": [],
+                  "third_yr_rep": [],
+                  "fourth_yr_rep": []}
+
+    dbCandidates = models.Candidate.query.all()
+    
+    for candidate in dbCandidates:
+        if candidate.position == "president":
+            candidates['president'].append(serializeCandidate(candidate))
+        elif candidate.position == "executive_vp":
+            candidates['executive_vp'].append(serializeCandidate(candidate))
+        elif candidate.position == "executive_board_sec":
+            candidates['executive_board_sec'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_finance":
+            candidates['vp_finance'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_academic_affairs":
+            candidates['vp_academic_affairs'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_internal_affairs":
+            candidates['vp_internal_affairs'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_external_affairs":
+            candidates['vp_external_affairs'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_public_relations":
+            candidates['vp_public_relations'].append(serializeCandidate(candidate))
+        elif candidate.position == "vp_research_dev":
+            candidates['vp_research_dev'].append(serializeCandidate(candidate))
+        elif candidate.position == "first_yr_rep":
+            candidates['first_yr_rep'].append(serializeCandidate(candidate))
+        elif candidate.position == "second_yr_rep":
+            candidates['second_yr_rep'].append(serializeCandidate(candidate))
+        elif candidate.position == "third_yr_rep":
+            candidates['third_yr_rep'].append(serializeCandidate(candidate))
+        elif candidate.position == "fourth_yr_rep":
+            candidates['fourth_yr_rep'].append(serializeCandidate(candidate))
+    
+    return candidates
 
 def getVoteCount(position, vote):
     voteCount = models.Vote.query.filter(getattr(models.Vote, position) == vote).count()
@@ -73,7 +126,7 @@ def getVotePercentage(position, vote):
 
     return votePercentage
 
-def serializeCandidate(candidate):
+def serializeCandidateForVoteResults(candidate):
     return {
         'studentId': candidate.studentId,
         'name': candidate.name,
@@ -112,55 +165,55 @@ def getVoteResults():
         if candidate.position == "president":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['president']['candidates'].append(serializeCandidate(candidate))
+            voteResults['president']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "executive_vp":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['executive_vp']['candidates'].append(serializeCandidate(candidate))
+            voteResults['executive_vp']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "executive_board_sec":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['executive_board_sec']['candidates'].append(serializeCandidate(candidate))
+            voteResults['executive_board_sec']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "vp_finance":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_finance']['candidates'].append(serializeCandidate(candidate))
+            voteResults['vp_finance']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "vp_academic_affairs":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_academic_affairs']['candidates'].append(serializeCandidate(candidate))
+            voteResults['vp_academic_affairs']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "vp_internal_affairs":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_internal_affairs']['candidates'].append(serializeCandidate(candidate))
+            voteResults['vp_internal_affairs']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "vp_external_affairs":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_external_affairs']['candidates'].append(serializeCandidate(candidate))
+            voteResults['vp_external_affairs']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "vp_public_relations":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_public_relations']['candidates'].append(serializeCandidate(candidate))
+            voteResults['vp_public_relations']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "vp_research_dev":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_research_dev']['candidates'].append(serializeCandidate(candidate))
+            voteResults['vp_research_dev']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "first_yr_rep":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['first_yr_rep']['candidates'].append(serializeCandidate(candidate))
+            voteResults['first_yr_rep']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "second_yr_rep":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['second_yr_rep']['candidates'].append(serializeCandidate(candidate))
+            voteResults['second_yr_rep']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "third_yr_rep":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['third_yr_rep']['candidates'].append(serializeCandidate(candidate))
+            voteResults['third_yr_rep']['candidates'].append(serializeCandidateForVoteResults(candidate))
         elif candidate.position == "fourth_yr_rep":
             candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
             candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['fourth_yr_rep']['candidates'].append(serializeCandidate(candidate))
+            voteResults['fourth_yr_rep']['candidates'].append(serializeCandidateForVoteResults(candidate))
     
     return voteResults
 

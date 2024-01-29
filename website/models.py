@@ -8,7 +8,6 @@ class User(db.Model, UserMixin):
     firstName = db.Column(db.String(100), nullable=False)
     lastName = db.Column(db.String(100), nullable=False)
     userType = db.Column(db.String(20), nullable=False)
-    isCandidate = db.Column(db.Boolean, nullable=False)
     posts = db.relationship('Post')
     # ballots = db.relationship('Ballot', backref='user', lazy=True)
 

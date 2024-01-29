@@ -11,10 +11,16 @@ def getUser(userId, password, userType):
 
 @auth.route('/login')
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("views.home"))
+    
     return render_template('index.html')
 
 @auth.route('/login/admin', methods=['GET', 'POST'])
 def loginAdmin():
+    if current_user.is_authenticated:
+        return redirect(url_for("views.home"))
+    
     if request.method == 'POST':
         user = getUser(request.form.get('userId'), request.form.get('password'), "Admin")
         if user:
@@ -27,6 +33,9 @@ def loginAdmin():
 
 @auth.route('/login/student', methods=['GET', 'POST'])
 def loginStudent():
+    if current_user.is_authenticated:
+        return redirect(url_for("views.home"))
+    
     if request.method == 'POST':
         user = getUser(request.form.get('userId'), request.form.get('password'), "Student")
         if user:

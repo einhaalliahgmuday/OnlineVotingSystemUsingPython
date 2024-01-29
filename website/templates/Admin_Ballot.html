@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/styles/ballot.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <title>Ballot Page</title>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">Timeline</a></li>
+          <li><a href="Voter_Ballot.html">Ballot</a></li>
+          <li><a href="Voter_LiveResult.html">Live Result</a></li>
+          <li><a href="/settings">Settings</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="Title">
+      <h1>CENTRAL STUDENT COUNCIL</h1>
+      <p>BALLOT BOARD</p>
+    </section>
+
+    <!--ADMIN ACTION-->
+    <div class="candidate">
+      <form>
+        <table>
+          <tr>
+            <td>
+              <div class="inputBox">
+                <input type="text" placeholder="Student Number" required />
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="inputBox">
+                <select id="positionSelect" onchange="updateInputType()">
+                  <option value="text">Position</option>
+                  <option value="text">President</option>
+                  <option value="text">Vice President</option>
+                  <option value="text">Executive Board Secretary</option>
+                  <option value="text">VP for Finance</option>
+                  <option value="text">VP for Academic Affairs</option>
+                  <option value="text">VP for Internal Affairs</option>
+                  <option value="text">VP for External Affairs</option>
+                  <option value="text">VP for Public Relations</option>
+                  <option value="text">VP for Research and Development</option>
+                  <option value="text">First Year Representative</option>
+                  <option value="text">Second Year Representative</option>
+                  <option value="text">Third Year Representative</option>
+                  <option value="text">Fourth Year Representative</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <div class="inputBox">
+          <input type="submit" name="" value="Save" />
+        </div>
+      </form>
+    </div>
+
+    <script>
+      function updateInputType() {
+        var positionSelect = document.getElementById("positionSelect");
+        var selectedOption =
+          positionSelect.options[positionSelect.selectedIndex];
+
+        var positionInput = document.querySelector(
+          '.inputBox input[placeholder="Position"]'
+        );
+        positionInput.setAttribute("type", selectedOption.value);
+      }
+    </script>
+  </body>
+</html>

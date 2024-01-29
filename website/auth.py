@@ -9,6 +9,10 @@ def getUser(userId, password, userType):
     user = models.User.query.filter(models.User.userId == userId, models.User.password == password, models.User.userType == userType).first()
     return user
 
+@auth.route('/login')
+def login():
+    return render_template('index.html')
+
 @auth.route('/login/admin', methods=['GET', 'POST'])
 def loginAdmin():
     if request.method == 'POST':
@@ -19,7 +23,7 @@ def loginAdmin():
         else:
             return "Invalid credentials."
 
-    return render_template("login-admin.html")
+    return render_template("AdminLoginForm.html")
 
 @auth.route('/login/student', methods=['GET', 'POST'])
 def loginStudent():
@@ -32,10 +36,10 @@ def loginStudent():
             return "Invalid credentials."
         # flash('Incorrect password, try again.', category='error')
 
-    return render_template("login-student.html", user=current_user)
+    return render_template("StudentLoginForm.html")
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()   
-    return redirect(url_for('views.selectUserType'))
+    return redirect(url_for('auth.login'))

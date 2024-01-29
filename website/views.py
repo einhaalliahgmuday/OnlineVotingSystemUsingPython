@@ -66,16 +66,12 @@ def getVoteCount(position, vote):
 def getVotePercentage(position, vote):
     totalVoters = models.Vote.query.count()
     voteCount = getVoteCount(position, vote)
-    getVotePercentage = 0
+    votePercentage = 0
 
     if not totalVoters == 0:
-        getVotePercentage = (100 / totalVoters) * voteCount
+        votePercentage = (100 / totalVoters) * voteCount
 
-    return getVotePercentage
-
-# @socketio.on('vote')
-# def handle_vote(data):
-#     print(f"Received a vote: {data}")
+    return votePercentage
 
 def serializeCandidate(candidate):
     return {

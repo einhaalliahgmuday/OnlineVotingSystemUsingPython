@@ -20,51 +20,338 @@
     </header>
 
     <div class="live-result-container">
-      <h1>CENTRAL STUDENT COUNCIL (2024-2025)</h1>
+      <h1>CENTRAL STUDENT COUNCIL</h1>
       <div class="live-time">
         <p>As of <time datetime="" id="liveTime"></time></p>
       </div>
+
+      <!-- RESULT FOR PRESIDENT -->
       {% if not voteResults["president"]["candidates"]|length <= 0 %}
       <div class="live-result-graph">
         <h2>PRESIDENT</h2>
         {% for candidate in voteResults["president"]["candidates"] %}
-        <div class="result-bar president-result-bar">
-          <span class="candidate-name">{{candidate['name']}}</span>
-          <div class="bar" data-student-id="{{candidate['studentId']}}"
-          style="width: {{candidate['votePercentage']}}%">
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar president-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="president-bar-abstain"
+            style="width: {{voteResults['president']['abstain']['votePercentage']}}%"
+          ></div>
         </div>
       </div>
-      {% endfor %}
-      <div class="result-bar">
-        <span class="candidate-name">Abstain</span>
-        <div class="bar" id="abstain" style="width: {{voteResults['president']['abstain']['votePercentage']}}%"></div>
+      {% endif %}
+
+      <!-- RESULT FOR EXECUTIVE VICE PRESIDENT -->
+      {% if not voteResults["executive_vp"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>EXECUTIVE VICE PRESIDENT</h2>
+        {% for candidate in voteResults["executive_vp"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar executive-vp-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="executive-vp-bar-abstain"
+            style="width: {{voteResults['executive_vp']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
       </div>
+      {% endif %}
+
+      <!-- RESULT FOR EXECUTIVE BOARD SECRETARY -->
+      {% if not voteResults["executive_board_sec"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>EXECUTIVE BOARD SECRETARY</h2>
+        {% for candidate in voteResults["executive_board_sec"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar executive-board-sec-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="executive-board-sec-bar-abstain"
+            style="width: {{voteResults['executive_board_sec']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- RESULT FOR VICE PRESIDENT FOR FINANCE -->
+      {% if not voteResults["vp_finance"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>VICE PRESIDENT FOR FINANCE</h2>
+        {% for candidate in voteResults["vp_finance"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar vp-finance-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="vp-finance-bar-abstain"
+            style="width: {{voteResults['vp_finance']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- RESULT FOR VICE PRESIDENT FOR ACADEMIC AFFAIRS -->
+      {% if not voteResults["vp_academic_affairs"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>VICE PRESIDENT FOR ACADEMIC AFFAIRS</h2>
+        {% for candidate in voteResults["vp_academic_affairs"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar vp-academic-affairs-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="vp-academic-affairs-bar-abstain"
+            style="width: {{voteResults['vp_academic_affairs']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- RESULT FOR VICE PRESIDENT FOR INTERNAL AFFAIRS -->
+      {% if not voteResults["vp_internal_affairs"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>VICE PRESIDENT FOR INTERNAL AFFAIRS</h2>
+        {% for candidate in voteResults["vp_internal_affairs"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar vp-internal-affairs-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="vp-internal-affairs-bar-abstain"
+            style="width: {{voteResults['vp_internal_affairs']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- RESULT FOR VICE PRESIDENT FOR EXTERNAL AFFAIRS -->
+      {% if not voteResults["vp_external_affairs"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>VICE PRESIDENT FOR EXTERNAL AFFAIRS</h2>
+        {% for candidate in voteResults["vp_external_affairs"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar vp-external-affairs-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="vp-external-affairs-bar-abstain"
+            style="width: {{voteResults['vp_external_affairs']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- RESULT FOR VICE PRESIDENT FOR PUBLIC RELATIONS -->
+      {% if not voteResults["vp_public_relations"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>VICE PRESIDENT FOR PUBLIC RELATIONS</h2>
+        {% for candidate in voteResults["vp_public_relations"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar vp-public-relations-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="vp-public-relations-bar-abstain"
+            style="width: {{voteResults['vp_public_relations']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- RESULT FOR VICE PRESIDENT FOR RESEARCH AND DEVELOPMENT -->
+      {% if not voteResults["vp_research_dev"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>VICE PRESIDENT FOR RESEARCH AND DEVELOPMENT</h2>
+        {% for candidate in voteResults["vp_research_dev"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar vp-research-dev-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="vp-research-dev-bar-abstain"
+            style="width: {{voteResults['vp_research_dev']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- RESULT FOR FIRST YEAR REPRESENTATIVE -->
+      {% if not voteResults["first_yr_rep"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>FIRST YEAR REPRESENTATIVE</h2>
+        {% for candidate in voteResults["first_yr_rep"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar first-yr-rep-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="first-yr-rep-bar-abstain"
+            style="width: {{voteResults['first_yr_rep']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- RESULT FOR SECOND YEAR REPRESENTATIVE -->
+      {% if not voteResults["second_yr_rep"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>SECOND YEAR REPRESENTATIVE</h2>
+        {% for candidate in voteResults["second_yr_rep"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar second-yr-rep-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="second-yr-rep-bar-abstain"
+            style="width: {{voteResults['second_yr_rep']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- RESULT FOR THIRD YEAR REPRESENTATIVE -->
+      {% if not voteResults["third_yr_rep"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>THIRD YEAR REPRESENTATIVE</h2>
+        {% for candidate in voteResults["third_yr_rep"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar third-yr-rep-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="third-yr-rep-bar-abstain"
+            style="width: {{voteResults['third_yr_rep']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- RESULT FOR FOURTH YEAR REPRESENTATIVE -->
+      {% if not voteResults["fourth_yr_rep"]["candidates"]|length <= 0 %}
+      <div class="live-result-graph">
+        <h2>FOURTH YEAR REPRESENTATIVE</h2>
+        {% for candidate in voteResults["fourth_yr_rep"]["candidates"] %}
+        <div class="result-bar">
+          <span>{{candidate['name']}}</span>
+          <div
+            class="bar fourth-yr-rep-bar-candidate"
+            data-student-id="{{candidate['studentId']}}"
+            style="width: {{candidate['votePercentage']}}%"
+          ></div>
+        </div>
+        {% endfor %}
+        <div class="result-bar">
+          <span>Abstain</span>
+          <div
+            class="bar"
+            id="fourth-yr-rep-bar-abstain"
+            style="width: {{voteResults['fourth_yr_rep']['abstain']['votePercentage']}}%"
+          ></div>
+        </div>
+      </div>
+      {% endif %}
     </div>
-    {% endif %} 
-    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
-
-    <script>
-      setInterval(function () {
-          document.getElementById('liveTime').textContent = new Date().toLocaleString();
-      }, 1000);
-
-      document.getElementById('liveTime').textContent = new Date().toLocaleString();
-
-      var socket = io('http://127.0.0.1:5000');
-
-      socket.on('vote', function(data) {
-          if (data.president.candidates.length > 0) {
-              for (let i = 0; i < data.president.candidates.length; i++) {
-                const candidate = data.president.candidates[i];
-                const resultBar = document.querySelector(".president-result-bar [data-student-id='" + candidate.studentId + "']");
-                resultBar.style.width = `${candidate.votePercentage}%`;
-              }
-              const abstain = document.getElementById("abstain");
-              abstain.style.width = `${data.president.abstain.votePercentage}%`;
-          }
-      });
-    </script>
+    <script src="../static/scripts/live-results.js"></script>
   </body>
 </html>

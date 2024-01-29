@@ -25,12 +25,6 @@ class Candidate(db.Model):
     # ballot_id = db.Column(db.Integer, db.ForeignKey('ballot.id'), nullable=False)
     student = db.relationship('User', backref='candidate', lazy=True)
 
-# class CandidateVoteCount:
-#     def __init__(self, position, name, voteCount):
-#         self.position = position
-#         self.name = name
-#         self.voteCount = voteCount
-
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.String(15), db.ForeignKey('user.userId'), nullable=False)

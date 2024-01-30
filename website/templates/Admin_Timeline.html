@@ -9,6 +9,23 @@
     />
     <link rel="stylesheet" href="../static/styles/style.css" />
     <title>Timeline</title>
+    <style>
+      textarea {
+        display: block;
+        width: 100%;
+        max-height: 12rem;
+        padding: .5rem .5rem 0;
+        border: none;
+        outline: none;
+        resize: none;
+        overflow-y: hidden;
+      }
+
+      form {
+        display: block;
+        width: 100%;
+      }
+    </style>
   </head>
 
   <body>
@@ -24,52 +41,38 @@
     </header>
 
     <div class="add-post-section">
-      <div class="options-icon">
+      <form action="/" method="POST">
+        <textarea name="text" id="" placeholder="Add Post to Your Timeline" oninput="autoResize(this)"></textarea>
+        <button type="submit">Post</input>
+      </form>
+      <!-- <div class="options-icon">
         <span class="option"><i class="fas fa-plus"></i></span>
-      </div>
-      <p class="add-post-text">Add Post to Your Timeline</p>
+      </div> -->
+
     </div>
 
+    <script>
+      function autoResize(textarea) {
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
+      }
+    </script>
+
+    {% for post in posts %}
     <div class="timeline">
       <div class="timeline-item">
         <div class="centered-icon">
           <img src="../static/images/CSC_LOGO.png" alt="User Icon" />
+          <p style="font-weight: bold;">Einha Muday | Running for President</p>
         </div>
-        <p class="timeline-text">
-          Hello Everyone, Im Salma Fae A. Lumaoang running for Vice President
-          for Information and Technology!
-        </p>
+        <p class="timeline-text" style="white-space: pre-wrap;">{{ post.text | trim }}</p>
         <div class="options-icon">
           <div class="options-icon">
             <span class="option"><i class="fas fa-trash-alt"></i></span>
           </div>
         </div>
       </div>
-
-      <div class="timeline-item">
-        <div class="centered-icon">
-          <img src="CSC_LOGO.png" alt="User Icon" />
-        </div>
-        <p class="timeline-text"></p>
-        <div class="options-icon">
-          <div class="options-icon">
-            <span class="option"><i class="fas fa-trash-alt"></i></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="centered-icon">
-          <img src="CSC_LOGO.png" alt="User Icon" />
-        </div>
-        <p class="timeline-text"></p>
-        <div class="options-icon">
-          <div class="options-icon">
-            <span class="option"><i class="fas fa-trash-alt"></i></span>
-          </div>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
 
     <main></main>
   </body>

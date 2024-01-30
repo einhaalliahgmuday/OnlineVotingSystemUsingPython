@@ -6,22 +6,30 @@ from . import db, models, socketio
 
 views = Blueprint('views', __name__)
 
-@views.route('/')
+@views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    isCandidate = False
+    if request.method == 'POST':
+        text = request.form.get('text')
+        userName = current_user.firstName + " " + current_user.lastName
+        post = models.Post(text=text, userName=userName, userId=current_user.userId)
 
-    for candidate in models.Candidate.query.all():
-        if current_user.userId == candidate.studentId:
-            isCandidate = True
-            break
+        db.session.add(post)
+
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error during data insertion: {e}")
+
+    posts = models.Post.query.all()
 
     if current_user.userType == "Admin":
-        return render_template('Admin_Timeline.html')
-    elif current_user.userType == "Student" and isCandidate == True:
-        return render_template('Candidate_Timeline.html')
-    elif current_user.userType == "Student" and isCandidate == False:
-        return render_template('Voter_Timeline.html')
+        return render_template("Admin_Timeline.html", posts=posts)
+    elif current_user.userType == "Student" and isCandidate() == True:
+        return render_template("Candidate_Timeline.html", posts=posts)
+    elif current_user.userType == "Student" and isCandidate() == False:
+        return render_template("Voter_Timeline.html", posts=posts)
     
 @views.route('/settings')
 @login_required
@@ -55,7 +63,47 @@ def vote():
 @views.route('/live-results')
 @login_required
 def liveResults():
-    return render_template("LiveResult.html", voteResults=getVoteResults())
+    return render_template("LiveResult.html", voteResults=getVoteResults(), user=current_user)
+
+# @views.route('/timeline', methods=['GET', 'POST'])
+# @login_required
+# def timeline():
+#     if request.method == 'POST':
+#         text = request.form.get('text')
+#         userName = current_user.firstName + " " + current_user.lastName
+#         post = models.Post(text=text, userName=userName, userId=current_user.userId)
+
+#         db.session.add(post)
+
+#         try:
+#             db.session.commit()
+#         except Exception as e:
+#             db.session.rollback()
+#             print(f"Error during data insertion: {e}")
+
+#     posts = models.Post.query.all()
+
+#     if current_user.userType == "Admin":
+#         return render_template("Admin_Timeline.html", posts=posts)
+#     elif current_user.userType == "Student" and isCandidate() == True:
+#         return render_template("Candidate_Timeline.html", posts=posts)
+#     elif current_user.userType == "Student" and isCandidate() == False:
+#         return render_template("Voter_Timeline.html", posts=posts)
+    
+# @views.route('/add-post', methods=['GET', 'POST'])
+# @login_required
+# def addPost():
+    
+
+def isCandidate():
+    isCandidate = False
+
+    for candidate in models.Candidate.query.all():
+        if current_user.userId == candidate.studentId:
+            isCandidate = True
+            break
+    
+    return isCandidate
 
 def serializeCandidate(candidate):
     return {

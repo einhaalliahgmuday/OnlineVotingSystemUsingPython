@@ -27,7 +27,8 @@ class Candidate(db.Model):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.String(15), db.ForeignKey('user.userId'), nullable=False)
-    text = db.Column(db.String(10000))
+    userName = db.Column(db.String(200), nullable=False)
+    text = db.Column(db.Text)
     image = db.Column(db.LargeBinary)
 
 class Vote(db.Model):

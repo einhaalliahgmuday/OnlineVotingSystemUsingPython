@@ -27,7 +27,7 @@ def loginAdmin():
             login_user(user)
             return redirect(url_for("views.home"))
         else:
-            return "Invalid credentials."
+            flash("Invalid credentials.", 'error')
 
     return render_template("AdminLoginForm.html")
 
@@ -42,8 +42,7 @@ def loginStudent():
             login_user(user)
             return redirect(url_for("views.home"))
         else:
-            return "Invalid credentials."
-        # flash('Incorrect password, try again.', category='error')
+            flash("Invalid credentials.", 'error')
 
     return render_template("StudentLoginForm.html")
 

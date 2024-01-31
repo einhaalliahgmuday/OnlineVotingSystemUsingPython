@@ -140,9 +140,13 @@ main {
   margin: 20px;
 }
 
+.timeline:first-child {
+  margin-top: 50px;
+}
+
 .timeline {
   max-width: 600px;
-  margin: 50px auto;
+  margin: 25px auto 50px;
 }
 
 .timeline-item {

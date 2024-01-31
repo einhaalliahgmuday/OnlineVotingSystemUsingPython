@@ -12,50 +12,115 @@ views = Blueprint('views', __name__)
 def home():
     if request.method == 'POST':
         text = request.form.get('text')
-        userName = current_user.firstName + " " + current_user.lastName
-        image = None
+        file = request.files['post-image']
+        isFile = bool(file.filename.strip())
+        isContinue = True
 
-        if 'post-image' in request.files:
-            print("YES")
-            file = request.files['post-image']
-            if file and allowed_file(file.filename):
+        imageDir = None
+        imageSrc = None
+        imageId = 0
+        if db.session.query(models.Post.query.exists()).scalar():
+            imageId = db.session.query(db.func.max(models.Post.id)).scalar() + 1
+
+        if isFile:
+            if not allowed_file(file.filename):
+                flash("File is not an image file.", 'error')
+                redirect(url_for('views.home'))
+                isContinue = False
+            else:
                 fileName = secure_filename(file.filename)
-                image = f'../static/images/posts/{fileName}'
-                file.save(f'website/static/images/posts/{fileName}')
+                imageSrc = f'../static/images/posts/{imageId}_{fileName}'
+                imageDir = f'website/static/images/posts/{imageId}_{fileName}'
+                file.save(imageDir)
+        else:
+            if len(text) < 1:
+                isContinue == False
+                flash("Post is empty.", 'error')
+                return redirect(url_for('views.home'))
+            
+        if isContinue:
+            userId = current_user.userId
+            userName = current_user.firstName + " " + current_user.lastName
+            userRole = getUserPostRole(current_user)
+            
+            post = models.Post(text=text, imageDir=imageDir, imageSrc=imageSrc, userName=userName, userId=userId, userRole=userRole)
+            db.session.add(post)
 
-        post = models.Post(text=text, userName=userName, userId=current_user.userId, image=image)
+            try:
+                db.session.commit()
+                return redirect(url_for('views.home'))
+            except Exception as e:
+                db.session.rollback()
+                print(f"Error during data insertion: {e}")
 
-        db.session.add(post)
-
-        try:
-            db.session.commit()
-            return redirect(url_for('views.home'))
-        except Exception as e:
-            db.session.rollback()
-            print(f"Error during data insertion: {e}")
-
-    posts = models.Post.query.all()
+    posts = getSortedPostsByUserRole()
 
     if current_user.userType == "Admin":
-        return render_template("Admin_Timeline.html", posts=posts)
+        return render_template("Admin_Timeline.html", posts=posts, user=current_user, isCandidate = isCandidate())
     elif current_user.userType == "Student" and isCandidate() == True:
-        return render_template("Candidate_Timeline.html", posts=posts)
+        return render_template("Candidate_Timeline.html", posts=posts, user=current_user, isCandidate = isCandidate())
     elif current_user.userType == "Student" and isCandidate() == False:
-        return render_template("Voter_Timeline.html", posts=posts)
+        return render_template("Voter_Timeline.html", posts=posts, user=current_user, isCandidate = isCandidate())
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
+
+def getUserPostRole(user):
+    if user.userType == "Admin":
+        return "Admin"
+    else:
+        candidate = models.Candidate.query.filter(models.Candidate.studentId == user.userId).first()
+        if candidate.position == "president":
+            return "President"
+        elif candidate.position == "executive_vp":
+            return "Executive Vice President"
+        elif candidate.position == "executive_board_sec":
+            return "Executive Board Secretary"
+        elif candidate.position == "vp_finance":
+            return "Vice President for Finance"
+        elif candidate.position == "vp_academic_affairs":
+            return "Vice President for Academic Affairs"
+        elif candidate.position == "vp_internal_affairs":
+            return "Vice President for Internal Affairs"
+        elif candidate.position == "vp_external_affairs":
+            return "Vice President for External Affairs"
+        elif candidate.position == "vp_public_relations":
+            return "Vice President for Public Relations"
+        elif candidate.position == "vp_research_dev":
+            return "Vice President for Research and Development"
+        elif candidate.position == "first_yr_rep":
+            return "First Year Representative"
+        elif candidate.position == "second_yr_rep":
+            return "Second Year Representative"
+        elif candidate.position == "third_yr_rep":
+            return "Third Year Representative"
+        elif candidate.position == "fourth_yr_rep":
+            return "Fourth Year Representative"
+
+def getSortedPostsByUserRole():
+    order = ["Admin", "President", "Executive Vice President", "Executive Board Secretary", "Vice President for Finance",
+             "Vice President for Academic Affairs", "Vice President for Internal Affairs", "Vice President for External Affairs", 
+             "Vice President for Public Relations", "Vice President for Research and Development", "First Year Representative",
+             "Second Year Representative", "Third Year Representative", "Fourth Year Representative"]
+
+    posts = models.Post.query.all()
+    sortedPosts = sorted(posts, key=lambda x: order.index(x.userRole))
+
+    return sortedPosts
 
 @views.route('/timeline/delete-post/postId=<int:postId>', methods=['DELETE'])
 def deletePost(postId):
     post = models.Post.query.get(postId)
 
     if post:
+        if post.imageDir:
+            os.remove(post.imageDir)
+
         db.session.delete(post)
         db.session.commit()
         return "Post successfully deleted."
     else:
-        return "An error occured. Please try again later.", 404
+        return "An error occured. Please try again later."
     
 @views.route('/settings')
 @login_required
@@ -90,35 +155,6 @@ def vote():
 @login_required
 def liveResults():
     return render_template("LiveResult.html", voteResults=getVoteResults(), user=current_user)
-
-# @views.route('/timeline', methods=['GET', 'POST'])
-# @login_required
-# def timeline():
-#     if request.method == 'POST':
-#         text = request.form.get('text')
-#         userName = current_user.firstName + " " + current_user.lastName
-#         post = models.Post(text=text, userName=userName, userId=current_user.userId)
-
-#         db.session.add(post)
-
-#         try:
-#             db.session.commit()
-#         except Exception as e:
-#             db.session.rollback()
-#             print(f"Error during data insertion: {e}")
-
-#     posts = models.Post.query.all()
-
-#     if current_user.userType == "Admin":
-#         return render_template("Admin_Timeline.html", posts=posts)
-#     elif current_user.userType == "Student" and isCandidate() == True:
-#         return render_template("Candidate_Timeline.html", posts=posts)
-#     elif current_user.userType == "Student" and isCandidate() == False:
-#         return render_template("Voter_Timeline.html", posts=posts)
-    
-# @views.route('/add-post', methods=['GET', 'POST'])
-# @login_required
-# def addPost():
     
 
 def isCandidate():

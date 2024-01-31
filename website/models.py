@@ -26,10 +26,12 @@ class Candidate(db.Model):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text)
+    imageDir = db.Column(db.String(200))
+    imageSrc = db.Column(db.String(200))
     userId = db.Column(db.String(15), db.ForeignKey('user.userId'), nullable=False)
     userName = db.Column(db.String(200), nullable=False)
-    text = db.Column(db.Text)
-    image = db.Column(db.String(200))
+    userRole = db.Column(db.String(100), nullable=False)
 
 class Vote(db.Model):
     voter = db.Column(db.String(15), db.ForeignKey('user.userId'), primary_key=True, nullable=False)

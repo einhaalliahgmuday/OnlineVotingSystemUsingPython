@@ -1,8 +1,9 @@
 from sqlite3 import IntegrityError
-from flask import Blueprint, redirect, render_template, request, flash, jsonify
+from flask import Blueprint, redirect, url_for, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-# import json
 from . import db, models, socketio
+import os
+from werkzeug.utils import secure_filename
 
 views = Blueprint('views', __name__)
 
@@ -12,12 +13,23 @@ def home():
     if request.method == 'POST':
         text = request.form.get('text')
         userName = current_user.firstName + " " + current_user.lastName
-        post = models.Post(text=text, userName=userName, userId=current_user.userId)
+        image = None
+
+        if 'post-image' in request.files:
+            print("YES")
+            file = request.files['post-image']
+            if file and allowed_file(file.filename):
+                fileName = secure_filename(file.filename)
+                image = f'../static/images/posts/{fileName}'
+                file.save(f'website/static/images/posts/{fileName}')
+
+        post = models.Post(text=text, userName=userName, userId=current_user.userId, image=image)
 
         db.session.add(post)
 
         try:
             db.session.commit()
+            return redirect(url_for('views.home'))
         except Exception as e:
             db.session.rollback()
             print(f"Error during data insertion: {e}")
@@ -30,6 +42,20 @@ def home():
         return render_template("Candidate_Timeline.html", posts=posts)
     elif current_user.userType == "Student" and isCandidate() == False:
         return render_template("Voter_Timeline.html", posts=posts)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
+
+@views.route('/timeline/delete-post/postId=<int:postId>', methods=['DELETE'])
+def deletePost(postId):
+    post = models.Post.query.get(postId)
+
+    if post:
+        db.session.delete(post)
+        db.session.commit()
+        return "Post successfully deleted."
+    else:
+        return "An error occured. Please try again later.", 404
     
 @views.route('/settings')
 @login_required

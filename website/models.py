@@ -29,7 +29,7 @@ class Post(db.Model):
     userId = db.Column(db.String(15), db.ForeignKey('user.userId'), nullable=False)
     userName = db.Column(db.String(200), nullable=False)
     text = db.Column(db.Text)
-    image = db.Column(db.LargeBinary)
+    image = db.Column(db.String(200))
 
 class Vote(db.Model):
     voter = db.Column(db.String(15), db.ForeignKey('user.userId'), primary_key=True, nullable=False)

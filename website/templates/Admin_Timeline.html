@@ -19,11 +19,64 @@
         outline: none;
         resize: none;
         overflow-y: hidden;
+        font-family: inherit;
+        font-size: inherit;
       }
 
       form {
         display: block;
         width: 100%;
+      }
+
+      .post-btn {
+        display: block;
+        background-color: #7d0000;
+        color: yellow;
+        font-size: 16px;
+        padding: 10px 3rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: auto;
+      }
+
+      .post-btn:hover {
+        background-color: 7D0000;
+        color: white;
+        border-radius: 5px;
+      }
+
+      .flash {
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .flash.flash-success {
+        background-color: rgba(200, 255, 200, 0.726);
+      }
+
+      .flash.flash-error {
+        background-color: rgba(255, 200, 186, 0.726);
+        color: rgb(156, 12, 12);
+      }
+
+      .flash-close-btn {
+        background-color: #7d0000;
+        border-radius: 5px;
+        background-color: transparent;
+        color: black;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+        font-size: inherit;
+        font-family: inherit;
+        font-weight: bold;  
+      }
+
+      .post-image {
+        width: 100%;
+        max-height: 150vh;
       }
     </style>
   </head>
@@ -39,16 +92,33 @@
         </ul>
       </nav>
     </header>
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %} 
+        {% if messages %} 
+        {% for category, message in messages %} 
+        {% if category == 'error' %}
+        <div class="flash flash-error">
+          <span>{{ message }}</span>
+          <button class="flash-close-btn" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% elif category == 'success' %}
+        <div class="flash flash-success">
+          <span>{{ message }}</span>
+          <button class="flash-close-btn" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %} {% endfor %} {% endif %} {% endwith%}
+    </div>
 
     <div class="add-post-section">
-      <form action="/" method="POST">
+      <form action="/" method="POST" enctype="multipart/form-data">
         <textarea name="text" id="" placeholder="Add Post to Your Timeline" oninput="autoResize(this)"></textarea>
-        <button type="submit">Post</input>
+        <input type="file" name="post-image" id="">
+        <button class="post-btn" type="submit">Post</button>
       </form>
-      <!-- <div class="options-icon">
-        <span class="option"><i class="fas fa-plus"></i></span>
-      </div> -->
-
     </div>
 
     <script>
@@ -63,17 +133,18 @@
       <div class="timeline-item">
         <div class="centered-icon">
           <img src="../static/images/CSC_LOGO.png" alt="User Icon" />
-          <p style="font-weight: bold;">Einha Muday | Running for President</p>
+          <p style="font-weight: bold;">{{post.userName}} | Running for President</p>
         </div>
         <p class="timeline-text" style="white-space: pre-wrap;">{{ post.text | trim }}</p>
+        <img class="post-image" src="{{post.image}}" alt="">
         <div class="options-icon">
           <div class="options-icon">
-            <span class="option"><i class="fas fa-trash-alt"></i></span>
+            <span class="option"><i class="fas fa-trash-alt" onclick="deletePost({{post.id}})"></i></span>
           </div>
         </div>
       </div>
     {% endfor %}
-
-    <main></main>
+    <script src="../static/scripts/index.js"></script>
+    <script src="../static/scripts/timeline.js"></script>
   </body>
 </html>

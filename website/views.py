@@ -1,7 +1,7 @@
 from sqlite3 import IntegrityError
 from flask import Blueprint, redirect, url_for, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from . import db, models, socketio
+from . import db, models, rules, socketio
 import os
 from werkzeug.utils import secure_filename
 
@@ -11,116 +11,73 @@ views = Blueprint('views', __name__)
 @login_required
 def home():
     if request.method == 'POST':
-        text = request.form.get('text')
-        file = request.files['post-image']
-        isFile = bool(file.filename.strip())
-        isContinue = True
+        userPostsCount = rules.getUserPostsCount()
 
-        imageDir = None
-        imageSrc = None
-        imageId = 0
-        if db.session.query(models.Post.query.exists()).scalar():
-            imageId = db.session.query(db.func.max(models.Post.id)).scalar() + 1
-
-        if isFile:
-            if not allowed_file(file.filename):
-                flash("File is not an image file.", 'error')
-                redirect(url_for('views.home'))
-                isContinue = False
-            else:
-                fileName = secure_filename(file.filename)
-                imageSrc = f'../static/images/posts/{imageId}_{fileName}'
-                imageDir = f'website/static/images/posts/{imageId}_{fileName}'
-                file.save(imageDir)
+        if userPostsCount >= 3:
+            flash("Users are only allowed for three (3) posts. Delete one of your posts, then try again.", "error")
         else:
-            if len(text) < 1:
-                isContinue == False
-                flash("Post is empty.", 'error')
-                return redirect(url_for('views.home'))
-            
-        if isContinue:
-            userId = current_user.userId
-            userName = current_user.firstName + " " + current_user.lastName
-            userRole = getUserPostRole(current_user)
-            
-            post = models.Post(text=text, imageDir=imageDir, imageSrc=imageSrc, userName=userName, userId=userId, userRole=userRole)
-            db.session.add(post)
+            text = request.form.get('text')
+            file = request.files['post-image']
+            isFile = bool(file.filename.strip())
+            isContinue = True
 
-            try:
-                db.session.commit()
-                return redirect(url_for('views.home'))
-            except Exception as e:
-                db.session.rollback()
-                print(f"Error during data insertion: {e}")
+            imageDir = None
+            imageSrc = None
+            imageId = 0
+            if db.session.query(models.Post.query.exists()).scalar():
+                imageId = db.session.query(db.func.max(models.Post.id)).scalar() + 1
 
-    posts = getSortedPostsByUserRole()
+            if isFile:
+                if not rules.allowed_file(file.filename):
+                    flash("File is not an image file.", 'error')
+                    # redirect(url_for('views.home'))
+                    isContinue = False
+                else:
+                    fileName = secure_filename(file.filename)
+                    imageSrc = f'../static/images/posts/{imageId}_{fileName}'
+                    imageDir = f'website/static/images/posts/{imageId}_{fileName}'
+                    file.save(imageDir)
+            else:
+                if len(text) < 1:
+                    isContinue == False
+                    flash("Post is empty.", 'error')
+                    return redirect(url_for('views.home'))
+                
+            if isContinue:
+                userId = current_user.userId
+                userName = current_user.firstName + " " + current_user.lastName
+                userRole = rules.getUserPostRole(current_user)
+                
+                post = models.Post(text=text, imageDir=imageDir, imageSrc=imageSrc, userName=userName, userId=userId, userRole=userRole)
+                db.session.add(post)
 
-    if current_user.userType == "Admin":
-        return render_template("Admin_Timeline.html", posts=posts, user=current_user, isCandidate = isCandidate())
-    elif current_user.userType == "Student" and isCandidate() == True:
-        return render_template("Candidate_Timeline.html", posts=posts, user=current_user, isCandidate = isCandidate())
-    elif current_user.userType == "Student" and isCandidate() == False:
-        return render_template("Voter_Timeline.html", posts=posts, user=current_user, isCandidate = isCandidate())
+                try:
+                    db.session.commit()
+                    return redirect(url_for('views.home'))
+                except Exception as e:
+                    db.session.rollback()
+                    print(f"Error during data insertion: {e}")
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
+    posts = rules.getSortedPostsByUserRole()
 
-def getUserPostRole(user):
-    if user.userType == "Admin":
-        return "Admin"
-    else:
-        candidate = models.Candidate.query.filter(models.Candidate.studentId == user.userId).first()
-        if candidate.position == "president":
-            return "President"
-        elif candidate.position == "executive_vp":
-            return "Executive Vice President"
-        elif candidate.position == "executive_board_sec":
-            return "Executive Board Secretary"
-        elif candidate.position == "vp_finance":
-            return "Vice President for Finance"
-        elif candidate.position == "vp_academic_affairs":
-            return "Vice President for Academic Affairs"
-        elif candidate.position == "vp_internal_affairs":
-            return "Vice President for Internal Affairs"
-        elif candidate.position == "vp_external_affairs":
-            return "Vice President for External Affairs"
-        elif candidate.position == "vp_public_relations":
-            return "Vice President for Public Relations"
-        elif candidate.position == "vp_research_dev":
-            return "Vice President for Research and Development"
-        elif candidate.position == "first_yr_rep":
-            return "First Year Representative"
-        elif candidate.position == "second_yr_rep":
-            return "Second Year Representative"
-        elif candidate.position == "third_yr_rep":
-            return "Third Year Representative"
-        elif candidate.position == "fourth_yr_rep":
-            return "Fourth Year Representative"
-
-def getSortedPostsByUserRole():
-    order = ["Admin", "President", "Executive Vice President", "Executive Board Secretary", "Vice President for Finance",
-             "Vice President for Academic Affairs", "Vice President for Internal Affairs", "Vice President for External Affairs", 
-             "Vice President for Public Relations", "Vice President for Research and Development", "First Year Representative",
-             "Second Year Representative", "Third Year Representative", "Fourth Year Representative"]
-
-    posts = models.Post.query.all()
-    sortedPosts = sorted(posts, key=lambda x: order.index(x.userRole))
-
-    return sortedPosts
+    return render_template("Timeline.html", posts=posts, user=current_user, isCandidate = rules.isCandidate())
 
 @views.route('/timeline/delete-post/postId=<int:postId>', methods=['DELETE'])
 def deletePost(postId):
     post = models.Post.query.get(postId)
 
     if post:
-        if post.imageDir:
-            os.remove(post.imageDir)
+        if current_user.userType == "Admin" or post.userId == current_user.userId:
+            if post.imageDir:
+                os.remove(post.imageDir)
 
-        db.session.delete(post)
-        db.session.commit()
-        return "Post successfully deleted."
-    else:
-        return "An error occured. Please try again later."
+            db.session.delete(post)
+            db.session.commit()
+            # flash ("Post deleted successfully.", 'success')
+        # else:
+        #     flash ("You are not allowed to delete this post.", 'error')
+    # else:
+    #     flash ("An error occured. Please try again later.", "error")
     
 @views.route('/settings')
 @login_required
@@ -133,200 +90,33 @@ def settings():
 @views.route('/vote-now', methods=['GET', 'POST'])
 @login_required
 def vote():
-    if request.method == 'POST':
-        formData = request.form.to_dict()
-        voter = current_user.userId
+    if rules.hasVoted() == True:
+        flash("You've already voted. You can only vote once.", "error")
+        return redirect(url_for('views.home'))
+    else:
+        if request.method == 'POST':
+            formData = request.form.to_dict()
+            voter = current_user.userId
 
-        vote = models.Vote(**formData, voter=voter)
+            vote = models.Vote(**formData, voter=voter)
+            
+            db.session.add(vote)
+
+            try:
+                db.session.commit()
+                flash('Your vote is counted. Thank you.', category="success")
+                socketio.emit('vote', rules.getVoteResults(), room=None)
+                return redirect(url_for('views.home'))
+            except Exception as e:
+                db.session.rollback()
+                print(f"Error during data insertion: {e}")
         
-        db.session.add(vote)
-
-        try:
-            db.session.commit()
-            flash('Your vote is counted.', category="success")
-            socketio.emit('vote', getVoteResults(), room=None)
-        except Exception as e:
-            db.session.rollback()
-            print(f"Error during data insertion: {e}")
-
-    return render_template('VoteNow.html', candidates=getCandidates())
+        return render_template('VoteNow.html', candidates = rules.getCandidates())
 
 @views.route('/live-results')
 @login_required
 def liveResults():
-    return render_template("LiveResult.html", voteResults=getVoteResults(), user=current_user)
-    
-
-def isCandidate():
-    isCandidate = False
-
-    for candidate in models.Candidate.query.all():
-        if current_user.userId == candidate.studentId:
-            isCandidate = True
-            break
-    
-    return isCandidate
-
-def serializeCandidate(candidate):
-    return {
-        'studentId': candidate.studentId,
-        'name': candidate.name,
-        'position': candidate.position
-    }
-
-def getCandidates():
-    candidates = {"president": [],
-                  "executive_vp": [],
-                  "executive_board_sec": [],
-                  "vp_finance": [],
-                  "vp_academic_affairs": [],
-                  "vp_internal_affairs": [],
-                  "vp_external_affairs": [],
-                  "vp_public_relations": [],
-                  "vp_research_dev": [],
-                  "first_yr_rep": [],
-                  "second_yr_rep": [],
-                  "third_yr_rep": [],
-                  "fourth_yr_rep": []}
-
-    dbCandidates = models.Candidate.query.all()
-    
-    for candidate in dbCandidates:
-        if candidate.position == "president":
-            candidates['president'].append(serializeCandidate(candidate))
-        elif candidate.position == "executive_vp":
-            candidates['executive_vp'].append(serializeCandidate(candidate))
-        elif candidate.position == "executive_board_sec":
-            candidates['executive_board_sec'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_finance":
-            candidates['vp_finance'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_academic_affairs":
-            candidates['vp_academic_affairs'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_internal_affairs":
-            candidates['vp_internal_affairs'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_external_affairs":
-            candidates['vp_external_affairs'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_public_relations":
-            candidates['vp_public_relations'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_research_dev":
-            candidates['vp_research_dev'].append(serializeCandidate(candidate))
-        elif candidate.position == "first_yr_rep":
-            candidates['first_yr_rep'].append(serializeCandidate(candidate))
-        elif candidate.position == "second_yr_rep":
-            candidates['second_yr_rep'].append(serializeCandidate(candidate))
-        elif candidate.position == "third_yr_rep":
-            candidates['third_yr_rep'].append(serializeCandidate(candidate))
-        elif candidate.position == "fourth_yr_rep":
-            candidates['fourth_yr_rep'].append(serializeCandidate(candidate))
-    
-    return candidates
-
-def getVoteCount(position, vote):
-    voteCount = models.Vote.query.filter(getattr(models.Vote, position) == vote).count()
-
-    return voteCount
-
-def getVotePercentage(position, vote):
-    totalVoters = models.Vote.query.count()
-    voteCount = getVoteCount(position, vote)
-    votePercentage = 0
-
-    if not totalVoters == 0:
-        votePercentage = (100 / totalVoters) * voteCount
-
-    return votePercentage
-
-def serializeCandidateForVoteResults(candidate):
-    return {
-        'studentId': candidate.studentId,
-        'name': candidate.name,
-        'position': candidate.position,
-        'voteCount': candidate.voteCount,
-        'votePercentage': candidate.votePercentage
-    }
-
-def getAbstainVoteByPosition(position):
-    voteCount = getVoteCount(position, "abstain")
-    votePercentage = getVotePercentage(position, "abstain")
-
-    return {"position": position, "voteCount": voteCount, "votePercentage": votePercentage}
-
-
-def getVoteResults():
-    totalVoters = models.Vote.query.count()
-    voteResults = {"totalVoters": totalVoters,
-                  "president": {"candidates": [], "abstain": getAbstainVoteByPosition("president")},
-                  "executive_vp": {"candidates": [], "abstain": getAbstainVoteByPosition("executive_vp")},
-                  "executive_board_sec": {"candidates": [], "abstain": getAbstainVoteByPosition("executive_board_sec")},
-                  "vp_finance": {"candidates": [], "abstain": getAbstainVoteByPosition("vp_finance")},
-                  "vp_academic_affairs": {"candidates": [], "abstain": getAbstainVoteByPosition("vp_academic_affairs")},
-                  "vp_internal_affairs": {"candidates": [], "abstain": getAbstainVoteByPosition("vp_internal_affairs")},
-                  "vp_external_affairs": {"candidates": [], "abstain": getAbstainVoteByPosition("vp_external_affairs")},
-                  "vp_public_relations": {"candidates": [], "abstain": getAbstainVoteByPosition("vp_public_relations")},
-                  "vp_research_dev": {"candidates": [], "abstain": getAbstainVoteByPosition("vp_research_dev")},
-                  "first_yr_rep": {"candidates": [], "abstain": getAbstainVoteByPosition("first_yr_rep")},
-                  "second_yr_rep": {"candidates": [], "abstain": getAbstainVoteByPosition("second_yr_rep")},
-                  "third_yr_rep": {"candidates": [], "abstain": getAbstainVoteByPosition("third_yr_rep")},
-                  "fourth_yr_rep": {"candidates": [], "abstain": getAbstainVoteByPosition("fourth_yr_rep")}}
-
-    dbCandidates = models.Candidate.query.all()
-    
-    for candidate in dbCandidates:
-        if candidate.position == "president":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['president']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "executive_vp":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['executive_vp']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "executive_board_sec":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['executive_board_sec']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "vp_finance":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_finance']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "vp_academic_affairs":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_academic_affairs']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "vp_internal_affairs":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_internal_affairs']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "vp_external_affairs":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_external_affairs']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "vp_public_relations":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_public_relations']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "vp_research_dev":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['vp_research_dev']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "first_yr_rep":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['first_yr_rep']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "second_yr_rep":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['second_yr_rep']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "third_yr_rep":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['third_yr_rep']['candidates'].append(serializeCandidateForVoteResults(candidate))
-        elif candidate.position == "fourth_yr_rep":
-            candidate.voteCount = getVoteCount(candidate.position, candidate.studentId)
-            candidate.votePercentage = getVotePercentage(candidate.position, candidate.studentId)
-            voteResults['fourth_yr_rep']['candidates'].append(serializeCandidateForVoteResults(candidate))
-    
-    return voteResults
-
+    return render_template("LiveResult.html", voteResults = rules.getVoteResults(), user=current_user)
 
 @views.route('/create-ballot', methods=['GET', 'POST'])
 @login_required

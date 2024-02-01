@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../static/styles/VoteNowStyle.css" />
+    <link rel="stylesheet" href="../static/styles/vote.css" />
     <title>Live Result</title>
   </head>
 
@@ -15,14 +15,37 @@
           {% if user.userType == "Admin" %}
           <li><a href="#">Ballot</a></li>
           {% endif %} {% if user.userType == "Student" %}
-          <li><a href="/vote-now">Vote Now</a></li>
+          <li><a href="/vote">Vote Now</a></li>
           {% endif %}
-          <li><a href="/live-results">Live Result</a></li>
+          <li><a class="current-page" href="/live-results">Live Result</a></li>
           <li><a href="/settings">Settings</a></li>
         </ul>
       </nav>
     </header>
 
+    <!-- DISPLAY FLASH MESSAGE -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="flash-container">
+      {% for category, message in messages %} {% if category == 'error' %}
+      <div class="flash flash-error">
+        <span>{{ message }}</span>
+        <button class="flash-close-btn" type="button">
+          <span>&times;</span>
+        </button>
+      </div>
+      {% elif category == 'success' %}
+      <div class="flash flash-success">
+        <span>{{ message }}</span>
+        <button class="flash-close-btn" type="button">
+          <span>&times;</span>
+        </button>
+      </div>
+      {% endif %} {% endfor %}
+    </div>
+    {% endif %} {% endwith%}
+
+    <!-- MAIN -->
     <div class="live-result-container">
       <h1>CENTRAL STUDENT COUNCIL</h1>
       <div class="live-time">
@@ -357,5 +380,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
     <script src="../static/scripts/live-results.js"></script>
+    <script src="../static/scripts/index.js"></script>
   </body>
 </html>

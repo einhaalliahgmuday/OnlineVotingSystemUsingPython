@@ -7,6 +7,28 @@
     <link rel="stylesheet" href="../static/styles/style.css" />
   </head>
   <body>
+    <!-- DISPLAY FLASH MESSAGE -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="flash-container">
+      {% for category, message in messages %} {% if category == 'error' %}
+      <div class="flash flash-error">
+        <span>{{ message }}</span>
+        <button class="flash-close-btn" type="button">
+          <span>&times;</span>
+        </button>
+      </div>
+      {% elif category == 'success' %}
+      <div class="flash flash-success">
+        <span>{{ message }}</span>
+        <button class="flash-close-btn" type="button">
+          <span>&times;</span>
+        </button>
+      </div>
+      {% endif %} {% endfor %}
+    </div>
+    {% endif %} {% endwith%}
+
     <div class="login-container">
       <img src="../static/images/CSC_LOGO.png" alt="CSC LOGO" />
       <h2>STUDENT LOGIN FORM</h2>
@@ -31,5 +53,6 @@
         </div>
       </form>
     </div>
+    <script src="../static/scripts/index.js"></script>
   </body>
 </html>

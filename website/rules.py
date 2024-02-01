@@ -1,6 +1,10 @@
 from flask_login import current_user
 from . import models
 
+def getUser(userId, password, userType):
+    user = models.User.query.filter(models.User.userId == userId, models.User.password == password, models.User.userType == userType).first()
+    return user
+
 # POST RULES
 
 def getUserPostsCount():

@@ -18,10 +18,32 @@
           <li><a href="/">Timeline</a></li>
           <li><a href="#">Ballot</a></li>
           <li><a href="/live-results">Live Result</a></li>
-          <li><a href="/settings">Settings</a></li>
+          <li><a class="current-page" href="/settings">Settings</a></li>
         </ul>
       </nav>
     </header>
+
+    <!-- DISPLAY FLASH MESSAGE -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="flash-container">
+      {% for category, message in messages %} {% if category == 'error' %}
+      <div class="flash flash-error">
+        <span>{{ message }}</span>
+        <button class="flash-close-btn" type="button">
+          <span>&times;</span>
+        </button>
+      </div>
+      {% elif category == 'success' %}
+      <div class="flash flash-success">
+        <span>{{ message }}</span>
+        <button class="flash-close-btn" type="button">
+          <span>&times;</span>
+        </button>
+      </div>
+      {% endif %} {% endfor %}
+    </div>
+    {% endif %} {% endwith%}
 
     <div class="account-container">
       <div class="account-icon">
@@ -32,16 +54,6 @@
       <button id="logoutButton" class="logout-button">Logout</button>
     </div>
 
-    <script>
-      document
-        .getElementById("logoutButton")
-        .addEventListener("click", function () {
-          var confirmLogout = confirm("Are you sure you want to Logout?");
-
-          if (confirmLogout) {
-            window.location.href = "/logout";
-          }
-        });
-    </script>
+    <script src="../static/scripts/index.js"></script>
   </body>
 </html>

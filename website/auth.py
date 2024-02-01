@@ -1,14 +1,12 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
-from . import models
+from . import models, rules
 
 auth = Blueprint('auth', __name__)
 
-def getUser(userId, password, userType):
-    user = models.User.query.filter(models.User.userId == userId, models.User.password == password, models.User.userType == userType).first()
-    return user
-
+# MAIN ROUTE WHEN A USER IS NOT LOGGED IN
+# RETURNS INDEX.HTML FOR USERS TO SELECT USER TYPE (STUDENT OR ADMIN)
 @auth.route('/login')
 def login():
     if current_user.is_authenticated:
@@ -16,36 +14,39 @@ def login():
     
     return render_template('index.html')
 
+# ROUTE FOR ADMIN LOGIN
 @auth.route('/login/admin', methods=['GET', 'POST'])
 def loginAdmin():
     if current_user.is_authenticated:
         return redirect(url_for("views.home"))
     
     if request.method == 'POST':
-        user = getUser(request.form.get('userId'), request.form.get('password'), "Admin")
+        user = rules.getUser(request.form.get('userId'), request.form.get('password'), "Admin")
         if user:
             login_user(user)
             return redirect(url_for("views.home"))
         else:
             flash("Invalid credentials.", 'error')
 
-    return render_template("AdminLoginForm.html")
+    return render_template("login-admin.html")
 
+# ROUTE FOR STUDENT LOGIN
 @auth.route('/login/student', methods=['GET', 'POST'])
 def loginStudent():
     if current_user.is_authenticated:
         return redirect(url_for("views.home"))
     
     if request.method == 'POST':
-        user = getUser(request.form.get('userId'), request.form.get('password'), "Student")
+        user = rules.getUser(request.form.get('userId'), request.form.get('password'), "Student")
         if user:
             login_user(user)
             return redirect(url_for("views.home"))
         else:
             flash("Invalid credentials.", 'error')
 
-    return render_template("StudentLoginForm.html")
+    return render_template("login-student.html")
 
+# ROUTE THAT LOGS OUT THE USER; REDIRECTS TO INDEX
 @auth.route('/logout')
 @login_required
 def logout():

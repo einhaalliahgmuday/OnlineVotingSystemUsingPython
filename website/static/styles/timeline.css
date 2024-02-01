@@ -1,13 +1,15 @@
 form {
   display: block;
   width: 100%;
+  overflow: hidden;
 }
 
-textarea {
+.post-text {
   display: block;
   width: 100%;
+  height: auto;
   max-height: 12rem;
-  padding: 0.5rem 0.5rem 0;
+  padding: 0.5rem 1rem 0 0.5rem;
   border: none;
   outline: none;
   resize: none;
@@ -31,8 +33,6 @@ textarea {
 }
 
 .file-name {
-  /* display: inline-block; */
-  /* margin-right: 10px; */
   font-size: 14px;
   max-width: 60%;
   max-height: 1rem;
@@ -79,19 +79,24 @@ input[type="file"] {
   line-height: 1;
 }
 
+.display-post-user-name.admin {
+  margin-bottom: 1rem;
+}
+
 .display-post-position {
-  margin-top: 0;
+  margin: 0;
   line-height: 1;
   font-weight: bold;
 }
 
 .display-post-text {
   white-space: pre-wrap;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0;
 }
 
 .display-post-image {
   width: 100%;
   max-height: 150vh;
   object-fit: contain;
+  margin-top: 0.5rem;
 }

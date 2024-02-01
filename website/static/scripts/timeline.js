@@ -1,4 +1,4 @@
-// AUTO-RESIZE TEXTAREA
+// AUTO-RESIZE TEXTAREA FOR POST FORM
 document.getElementById("post-text").addEventListener("input", function () {
   this.style.height = "auto";
   this.style.height = this.scrollHeight + "px";
@@ -9,8 +9,13 @@ function deletePost(postId) {
   fetch("/timeline/delete-post/postId=" + postId, {
     method: "DELETE",
   })
-    .then((_res) => {
-      window.location.reload();
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success == false) {
+        alert(data.message);
+      } else if (data.success) {
+        window.location.reload();
+      }
     })
     .catch((error) => {
       console.error("Error:", error);

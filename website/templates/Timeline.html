@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../static/styles/style.css" />
+    <title>Timeline</title>
+    <link rel="stylesheet" href="../static/styles/timeline.css" />
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">Timeline</a></li>
+          {% if user.userType == "Admin" %}
+          <li><a href="#">Ballot</a></li>
+          {% else %}
+          <li><a href="/vote-now">Vote Now</a></li>
+          {% endif %}
+          <li><a href="/live-results">Live Result</a></li>
+          <li><a href="/settings">Settings</a></li>
+        </ul>
+      </nav>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="flash-container">
+      {% for category, message in messages %} {% if category == 'error' %}
+      <div class="flash flash-error">
+        <span>{{ message }}</span>
+        <button class="flash-close-btn" type="button">
+          <span>&times;</span>
+        </button>
+      </div>
+      {% elif category == 'success' %}
+      <div class="flash flash-success">
+        <span>{{ message }}</span>
+        <button class="flash-close-btn" type="button">
+          <span>&times;</span>
+        </button>
+      </div>
+      {% endif %} {% endfor %}
+    </div>
+    {% endif %} {% endwith%}
+
+    <!-- ADD POST FOR USERS AND CANDIDATES -->
+    {% if user.userType == "Admin" or isCandidate == True %}
+    <div class="add-post-section">
+      <form action="/" method="POST" enctype="multipart/form-data">
+        <textarea
+          name="text"
+          id="post-text"
+          placeholder="Add Post to Your Timeline"
+        ></textarea>
+        <div class="input-and-post-btn-container">
+          <div class="input-file-container">
+            <span class="file-name"></span>
+            <label for="post-image"
+              ><i class="post-image-icon fa-regular fa-image"></i
+            ></label>
+            <input type="file" name="post-image" id="post-image" />
+          </div>
+          <button class="post-btn" type="submit">Post</button>
+        </div>
+      </form>
+    </div>
+    {% endif %}
+
+    <!-- DISPLAY POSTS -->
+    <div class="timeline">
+      {% for post in posts %}
+      <div class="timeline-item">
+        <div class="center">
+          <img
+            class="post-csc-logo"
+            src="../static/images/CSC_LOGO.png"
+            alt="icon"
+          />
+          {% if post.userRole == "Admin" %}
+          <p class="display-post-user-name">PUP BIÑAN COMMISSION ON ELECTION</p>
+          {% else %}
+          <p class="display-post-user-name">{{post.userName}}</p>
+          <p class="display-post-position">Running for {{post.userRole}}</p>
+          {% endif %}
+        </div>
+        {% if post.text %}
+        <p class="display-post-text">{{ post.text | trim }}</p>
+        {% endif %} {% if post.imageSrc %}
+        <img class="display-post-image" src="{{post.imageSrc}}" alt="" />
+        {% endif %} {% if user.userType == "Admin" or post.userId == user.userId
+        %}
+        <div class="options-icon">
+          <span class="option"
+            ><i class="fas fa-trash-alt" onclick="deletePost({{post.id}})"></i
+          ></span>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <script src="../static/scripts/index.js"></script>
+    <script src="../static/scripts/timeline.js"></script>
+  </body>
+</html>

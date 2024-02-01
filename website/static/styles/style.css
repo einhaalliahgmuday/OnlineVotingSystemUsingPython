@@ -1,6 +1,35 @@
+.flash {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.flash.flash-success {
+  background-color: rgba(200, 255, 200, 0.726);
+}
+
+.flash.flash-error {
+  background-color: rgba(255, 200, 186, 0.726);
+  color: rgb(156, 12, 12);
+}
+
+.flash-close-btn {
+  background-color: #7d0000;
+  border-radius: 5px;
+  background-color: transparent;
+  color: black;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: bold;
+}
+
 body {
   background-image: url("../images/Background.jpg");
   background-size: cover;
+  background-repeat: no-repeat;
   margin: 0;
   font-family: Arial, sans-serif;
 }
@@ -158,11 +187,11 @@ main {
   position: relative;
 }
 
-.centered-icon {
+.center {
   text-align: center;
 }
 
-.centered-icon img {
+.post-csc-logo {
   width: 280px;
   border-radius: 50%;
   margin-top: -60px;
@@ -174,8 +203,8 @@ main {
 }
 .options-icon {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 15px;
 }
 
 .option {
@@ -196,9 +225,7 @@ main {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
-  /* padding: 30px; */
   padding: 1rem;
-  /* margin: 20px; */
   display: flex;
   align-items: center;
   max-width: 545px;

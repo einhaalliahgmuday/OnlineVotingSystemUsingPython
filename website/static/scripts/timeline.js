@@ -1,8 +1,8 @@
 // AUTO-RESIZE TEXTAREA
-function autoResize(textarea) {
-  textarea.style.height = "auto";
-  textarea.style.height = textarea.scrollHeight + "px";
-}
+document.getElementById("post-text").addEventListener("input", function () {
+  this.style.height = "auto";
+  this.style.height = this.scrollHeight + "px";
+});
 
 // DELETE POST
 function deletePost(postId) {
@@ -18,7 +18,7 @@ function deletePost(postId) {
 }
 
 // DISPLAY FILE NAME
-function displayFileName(input) {
+document.getElementById("post-image").addEventListener("change", function () {
   const fileName = document.querySelector(".file-name");
-  fileName.textContent = input.files[0].name;
-}
+  fileName.textContent = this.files[0].name;
+});

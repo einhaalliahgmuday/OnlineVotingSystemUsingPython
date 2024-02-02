@@ -9,7 +9,6 @@ class User(db.Model, UserMixin):
     lastName = db.Column(db.String(100), nullable=False)
     userType = db.Column(db.String(20), nullable=False)
     posts = db.relationship('Post')
-    # ballots = db.relationship('Ballot', backref='user', lazy=True)
 
     def get_id(self):
         return str(self.userId)
@@ -21,8 +20,9 @@ class Candidate(db.Model):
     position = db.Column(db.String(100), nullable=False)
     voteCount = None
     votePercentage = None
-    # ballot_id = db.Column(db.Integer, db.ForeignKey('ballot.id'), nullable=False)
     student = db.relationship('User', backref='candidate', lazy=True)
+    ballot_status_id = db.Column(db.Integer, db.ForeignKey('ballot_status.id'), nullable=False)
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,15 +51,9 @@ class Vote(db.Model):
 
 class BallotStatus(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    isOpen = db.Column(db.Boolean, nullable=False)
-    # ballots = db.relationship('Ballot', back_populates='ballot_status', lazy=True)
+    isOpen = db.Column(db.Boolean, nullable=False, default=False)
+    isClosed = db.Column(db.Boolean, nullable=False, default=False)
 
-# class Ballot(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.String(15), db.ForeignKey('user.userId'), nullable=False)
-#     ballot_status_id = db.Column(db.Integer, db.ForeignKey('ballot_status.id'), nullable=False)
-#     ballot_name = db.Column(db.String(100), nullable=False)
-#     candidates = db.relationship('Candidate', backref='ballots', lazy=True)
-#     ballot_status = db.relationship('BallotStatus', back_populates='ballots')
+
 
 

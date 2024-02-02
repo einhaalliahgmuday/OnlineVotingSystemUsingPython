@@ -118,254 +118,137 @@ def vote():
 def liveResults():
     return render_template("LiveResult.html", voteResults = rules.getVoteResults(), user=current_user)
 
-@views.route('/create-ballot', methods=['GET', 'POST'])
+@views.route('/ballot', methods=['GET', 'POST'])
 @login_required
-def create_ballot():
-    students = models.Student.query.all()
+def ballot():
 
-    if request.method == 'POST':
-        positions = [
-            'president', 'vice_president', 'executive_board_sec', 'vp_finance',
-            'vp_academic_affairs', 'vp_internal_external_affairs', 'vp_public_relations',
-            'vp_research_dev', 'first_yr_rep', 'second_yr_rep', 'third_yr_rep', 'fourth_yr_rep'
-        ]
+    candidates = {
+        "president": models.Candidate.query.filter_by(position="president").all(),
+        "executive_vp": models.Candidate.query.filter_by(position="executive_vp").all(),
+        "executive_board_sec": models.Candidate.query.filter_by(position="executive_board_sec").all(),
+        "vp_finance": models.Candidate.query.filter_by(position="vp_finance").all(),
+        "vp_academic_affairs": models.Candidate.query.filter_by(position="vp_academic_affairs").all(),
+        "vp_internal_affairs": models.Candidate.query.filter_by(position="vp_internal_affairs").all(),
+        "vp_external_affairs": models.Candidate.query.filter_by(position="vp_external_affairs").all(),
+        "vp_public_relations": models.Candidate.query.filter_by(position="vp_public_relations").all(),
+        "vp_research_dev": models.Candidate.query.filter_by(position="vp_research_dev").all(),
+        "first_yr_rep": models.Candidate.query.filter_by(position="first_yr_rep").all(),
+        "second_yr_rep": models.Candidate.query.filter_by(position="second_yr_rep").all(),
+        "third_yr_rep": models.Candidate.query.filter_by(position="third_yr_rep").all(),
+        "fourth_yr_rep": models.Candidate.query.filter_by(position="fourth_yr_rep").all()
+    }
 
-        try:
-            
-            ballot_name = request.form.get('ballot_name')
-            ballot_status = models.BallotStatus(isOpen=True)
-            db.session.add(ballot_status)
-            db.session.commit()
+    return render_template('Admin_Ballot.html', candidates=candidates)
 
-
-            ballot = models.Ballot(user_id=current_user.userId, ballot_status=ballot_status, ballot_name=ballot_name)
-            db.session.add(ballot)
-            db.session.commit()
-
-            for position in positions:
-                student_ids = [request.form.get(f'{position}_id{i}') for i in range(1, 4)]
-
-                for student_id in student_ids:
-                    student = models.Student.query.get(student_id)
-
-                    if not student:
-                        flash(f"Student with ID {student_id} not found.", category='error')
-                        break
-
-                    # Check if a candidate with the same student ID and position already exists
-                    existing_candidate = models.Candidate.query.filter_by(studentId=student.studentId, position=position).first()
-
-                    if not existing_candidate:
-                        candidate = models.Candidate(studentId=student.studentId, position=position, voteCount=0, ballot_id=ballot.id)
-                        db.session.add(candidate)
-                    else:
-                        flash(f"There's a student ID in the same position that already exists for {position}.", 'error')
-                        db.session.rollback()
-                        return redirect('/create-ballot')
-
-            db.session.commit()
-            flash('Ballot created successfully!', category="success")
-            return redirect('/create-ballot')
-
-        except IntegrityError as e:
-            db.session.rollback()
-            flash(f'Error creating ballot: {str(e)}', category='error')
-
-    return render_template('create-ballot.html', students=students)
-
-@views.route('/get_student_info/<student_id>', methods=['GET'])
-def get_student_info(student_id):
-    student = models.Student.query.filter_by(studentId=student_id).first()
-
-    if student:
-        return jsonify({
-            'success': True,
-            'data': {
-                'name': {'first': student.firstName, 'last': student.lastName},
-                'course': student.course
-            }
-        })
-    else:
-        return jsonify({
-            'success': False,
-            'message': 'Student not found'
-        })
-      
-@views.route('/check_duplicate/<student_id>/<position>/<int:index>', methods=['GET'])
-@login_required
-def check_duplicate(student_id, position, index):
-    if not student_id:
-        return jsonify({'isDuplicate': False, 'isExistInOtherPosition': False, 'index': index, 'error': 'Student ID is missing'})
-
-    existing_candidate_same_position = models.Candidate.query.filter_by(studentId=student_id, position=position).first()
-
-    existing_candidate_other_position = models.Candidate.query.filter_by(studentId=student_id).filter(models.Candidate.position != position).first()
-
-    if existing_candidate_same_position:
-        return jsonify({'isDuplicate': True, 'isExistInOtherPosition': False, 'index': index, 'error': f'Duplicate candidate for {position} with student ID {student_id}'})
-    elif existing_candidate_other_position:
-        return jsonify({'isDuplicate': True, 'isExistInOtherPosition': True, 'index': index, 'error': f'Student ID {student_id} already exists in another position'})
-    else:
-        return jsonify({'isDuplicate': False, 'isExistInOtherPosition': False, 'index': index})
-
-@views.route('/get-ballot-status', methods=['GET'])
-@login_required
-def get_ballot_status():
-    user_ballot = models.Ballot.query.filter_by(user_id=current_user.userId).first()
-
-    if user_ballot:
-        ballot_status = user_ballot.ballot_status
-
-        if ballot_status:
-            return jsonify({'success': True, 'isOpen': ballot_status.isOpen})
-        else:
-            return jsonify({'success': False, 'message': 'No ballot status found for this user.'})
-    else:
-        return jsonify({'success': False, 'message': 'No ballot found for this user.'})
-    
-@views.route('/ballots')
-@login_required
-def list_ballots():
-    ballots = models.Ballot.query.all()
-    return render_template('ballot-list.html', ballots=ballots)
-
-@views.route('/toggle-ballot-status/<int:ballot_id>')
-@login_required
-def toggle_ballot_status(ballot_id):
-    ballot = models.Ballot.query.get(ballot_id)
-
-    if ballot:
-        ballot_status = ballot.ballot_status
-
-        if ballot_status:
-            ballot_status.isOpen = not ballot_status.isOpen
-
-            try:
-                db.session.commit()
-                flash('Ballot status updated successfully.', category='success')
-                return redirect('/ballots')
-            except Exception as e:
-                db.session.rollback() 
-                flash('Error committing changes to the database.', category='error')
-        else:
-            flash('Ballot status not found for this ballot.', category='error')
-
-    flash('Ballot not found.', category='error')
-    return redirect('/ballots')
-
-@views.route('/delete-ballot/<int:ballot_id>')
-@login_required
-def delete_ballot(ballot_id):
-
-    ballot = models.Ballot.query.get(ballot_id)
-
-    if ballot:
-        try:
-            models.Candidate.query.filter_by(ballot_id=ballot.id).delete()
-
-            models.BallotStatus.query.filter_by(id=ballot.ballot_status_id).delete()
-
-            db.session.delete(ballot)
-            db.session.commit()
-
-            flash('Ballot deleted successfully!', category='success')
-        except Exception as e:
-            db.session.rollback()
-            flash(f'Error deleting ballot: {str(e)}', category='error')
-
-    return redirect('/ballots')
-
-@views.route('/add-candidate/<int:ballot_id>', methods=['POST'])
-@login_required
-def add_candidate(ballot_id):
-    ballot = models.Ballot.query.get(ballot_id)
-    positions = [
-        'president', 'vice_president', 'executive_board_sec', 'vp_finance',
-        'vp_academic_affairs', 'vp_internal_external_affairs', 'vp_public_relations',
-        'vp_research_dev', 'first_yr_rep', 'second_yr_rep', 'third_yr_rep', 'fourth_yr_rep'
-    ]
-
-    if request.method == 'POST':
-        position = request.form['position']
-        student_id = request.form['studentId']
-
-        existing_candidate = models.Candidate.query.filter_by(position=position, studentId=student_id).first()
-
-        if existing_candidate:
-            flash(f"Student ID {student_id} already exists for a candidate in the same position.", category='error')
-        else:
-            try:
-                new_candidate = models.Candidate(position=position, studentId=student_id, voteCount=0, ballot_id=ballot.id)
-                db.session.add(new_candidate)
-                db.session.commit()
-                flash('Candidate added successfully!', category='success')
-            except IntegrityError as e:
-                db.session.rollback()
-                flash(f'Error adding candidate: {str(e)}', category='error')
-
-    candidates = models.Candidate.query.filter_by(ballot_id=ballot_id).all()
-
-    set_student_info_for_candidates(candidates)
-
-    return render_template('edit-ballot.html', ballot=ballot, candidates=candidates, positions=positions)
-
-@views.route('/delete-candidate/<int:ballot_id>/<int:candidate_id>')
-@login_required
-def delete_candidate(ballot_id, candidate_id):
-    candidate = models.Candidate.query.get(candidate_id)
+@views.route('/ballot/delete-candidate/<string:studentId>', methods=['DELETE'])
+def deleteCandidate(studentId):
+    candidate = models.Candidate.query.filter_by(studentId=studentId).first()
 
     if candidate:
+        db.session.delete(candidate)
+        db.session.commit()
+        flash('Candidate successfully deleted.', category='success'), 200
+    else:
+        flash('Candidate not found.', category='error'), 404
+
+@views.route('/ballot/add-candidate', methods=['POST'])
+def addCandidate():
+
+    if request.method == 'POST':
+        user_id_input = request.form.get('user-id-input')
+
+        # Check if a candidate with the given user ID already exists
+        existing_candidate = models.Candidate.query.filter_by(studentId=user_id_input).first()
+
+        if existing_candidate:
+            flash('Candidate already exists.', category='error')
+            return redirect('/ballot')
+
+        else:
+            user = models.User.query.get(user_id_input)
+
+            if user:
+                first_name = user.firstName
+                last_name = user.lastName
+
+                position = request.form.get('position')
+
+                new_candidate = models.Candidate(studentId=user.userId, name=f"{first_name} {last_name}", position=position)
+
+                db.session.add(new_candidate)
+
+                try:
+                    db.session.commit()
+                    flash('Candidate added successfully.', category='success')
+                except IntegrityError:
+                    db.session.rollback()
+                    flash('Candidate already exists.', category='error')
+                except Exception as e:
+                    db.session.rollback()
+                    flash(f"Error adding candidate: {e}", category='error')
+                    
+            return redirect('/ballot')
+
+    return render_template('Admin_Ballot.html')
+    
+@views.route('/ballot/status', methods=['POST'])
+def update_ballot_status():
+    ballot_status = models.BallotStatus.query.first()
+
+    if request.method == 'POST':
+        action = request.form.get('action')
+
+        if action == 'open' and not ballot_status.isOpen:
+            # Logic to open the ballot
+            ballot_status.isOpen = True
+            ballot_status.isClosed = False
+            db.session.commit()
+            flash('Ballot is now open!', 'success')
+
+        elif action == 'clear':
+            # Logic to clear the ballot
+            if ballot_status.isClosed:
+                models.Candidate.query.delete()
+                db.session.commit()
+                flash('Ballot cleared successfully!', 'success')
+            else:
+                flash('Cannot clear the ballot. Please close the ballot first.', 'error')
+
+        elif action == 'close' and not ballot_status.isClosed:
+            # Logic to close the ballot
+            ballot_status.isOpen = False
+            ballot_status.isClosed = True
+            db.session.commit()
+            flash('Ballot is now closed!', 'success')
+
+        else:
+            flash('Invalid action or the ballot is already in the desired status.', 'error')
+
+@views.route('/clear-ballot')
+def clearballot():
+    ballot_status = models.BallotStatus.query.first()
+
+    if ballot_status.isClosed:
         try:
-            db.session.delete(candidate)
+            # Clear all posts
+            models.Post.query.delete()
+
+            # Clear all votes
+            models.Vote.query.delete()
+
+            # Clear all candidates
+            models.Candidate.query.delete()
+
+            # Reset BallotStatus to a new state
+            ballot_status.isOpen = False
+            ballot_status.isClosed = False
             db.session.commit()
 
-            flash('Candidate deleted successfully!', category='success')
-        except IntegrityError as e:
+            flash('Ballot cleared successfully!', category='success')
+        except Exception as e:
             db.session.rollback()
-            flash(f'Error deleting candidate: {str(e)}', category='error')
+            flash(f'Error clearing ballot: {str(e)}', category='error')
+    else:
+        flash('Cannot clear the ballot. Please close the ballot first.', category='error')
 
-    candidates = models.Candidate.query.filter_by(ballot_id=ballot_id).all()
-
-    set_student_info_for_candidates(candidates)
-
-    return redirect(f'/edit-ballot/{ballot_id}')
-
-@views.route('/edit-ballot/<int:ballot_id>', methods=['GET'])
-@login_required
-def edit_ballot(ballot_id):
-    ballot = models.Ballot.query.get(ballot_id)
-    candidates = models.Candidate.query.filter_by(ballot_id=ballot_id).all()
-
-    set_student_info_for_candidates(candidates)
-
-    return render_template('edit-ballot.html', ballot=ballot, candidates=candidates)
-
-@views.route('/check_existing_candidate/<student_id>', methods=['GET'])
-@login_required
-def check_existing_candidate(student_id):
-    try:
-        if not student_id:
-            return jsonify({'exists': False, 'error': 'Student ID is missing'})
-
-        existing_candidate = models.Candidate.query.filter_by(studentId=student_id).first()
-
-        return jsonify({'exists': existing_candidate is not None})
-    except Exception as e:
-        return jsonify({'exists': False, 'error': str(e)})
-
-def set_student_info_for_candidates(candidates):
-    student_ids = [candidate.studentId for candidate in candidates]
-
-    students_info = {student.studentId: {'name': f"{student.firstName} {student.lastName}", 'course': student.course}
-                     for student in models.Student.query.filter(models.Student.studentId.in_(student_ids)).all()}
-    
-    for candidate in candidates:
-        student_id = candidate.studentId
-        student_info = students_info.get(student_id)
-
-        if student_info and isinstance(student_info, dict):
-            candidate.student_name = student_info['name']
-            candidate.student_course = student_info['course']
-        else:
-            candidate.student_name = ""
-            candidate.student_course = ""     
+    return redirect('/ballot')

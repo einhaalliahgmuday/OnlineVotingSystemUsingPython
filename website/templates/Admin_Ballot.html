@@ -22,6 +22,7 @@
             </ul>
         </nav>
     </header>
+
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
       messages %}
       <div class="flash-container">
@@ -41,7 +42,7 @@
         </div>
         {% endif %} {% endfor %}
       </div>
-      {% endif %} {% endwith%}
+    {% endif %} {% endwith%}
   
 
     <section id="Title">
@@ -51,6 +52,7 @@
 
     <!-- ADMIN ACTION -->
     <div class="candidate">
+      {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
         <form method="post" action="{{ url_for('views.addCandidate') }}">
             <table>
                 <tr>
@@ -87,19 +89,32 @@
             <div class="inputBox">
                 <input type="submit" name="" value="Save">
             </div>
-          </form>
+        </form>
+      {% endif %}
     </div>
     
     <div class="displaystat">
       <div id="status">STATUS: {{ current_ballot_status.ballotStatus }}</div>
-      <button id="open-btn" class="toggle-btn" data-action="{{ current_ballot_status.ballotStatus | lower }}" onclick="toggleState()">
-        {% if current_ballot_status.ballotStatus == 'NEW' %}
-          OPEN BALLOT
-        {% else %}
-          CLOSE BALLOT
-        {% endif %}
+      {% if current_ballot_status.ballotStatus != 'CLOSED' %}
+        <button id="open-btn" class="toggle-btn" data-action="{{ current_ballot_status.ballotStatus | lower }}" onclick="toggleState()">
+            {% if current_ballot_status.ballotStatus == 'NEW' %}
+                OPEN BALLOT
+            {% else %}
+                CLOSE BALLOT
+            {% endif %}
+        </button>
+      {% endif %}
+      <button id="clear-btn" class="clear" data-action="clear" onclick="clearBallot()" 
+        {% if current_ballot_status.ballotStatus == 'CLOSED' %}style="margin-left: 1310px;" 
+        onmouseover="adjustButtonPosition()" {% endif %}>
+        CLEAR BALLOT
       </button>
-      <button id="clear-btn" class="clear" data-action="clear" onclick="clearBallot()">CLEAR BALLOT</button>
+      
+      <script>
+          function adjustButtonPosition() {
+              document.getElementById('clear-btn').style.marginLeft = '1310px';
+          }
+      </script>
     </div>
 
     <div class="container">
@@ -112,8 +127,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
             {% endfor %}
@@ -129,8 +146,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -146,8 +165,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -163,8 +184,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -180,8 +203,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -197,8 +222,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -214,8 +241,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -231,8 +260,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -248,8 +279,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -265,8 +298,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -282,8 +317,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -299,8 +336,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}
@@ -316,8 +355,10 @@
               <div class="list">
                   <span>{{ candidate.name }}</span>
                   <div class="icon">
+                    {% if current_ballot_status.ballotStatus != 'OPEN' and current_ballot_status.ballotStatus != 'CLOSED' %}
                       <ion-icon name="trash-outline" onclick="deleteCandidate('{{ candidate.studentId }}')" 
                       style="cursor: pointer;"></ion-icon>
+                    {% endif %}
                   </div>
               </div>
               {% endfor %}

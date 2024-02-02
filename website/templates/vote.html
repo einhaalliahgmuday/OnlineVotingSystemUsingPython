@@ -19,6 +19,7 @@
     </header>
     <main>
       <div>
+        {% if current_ballot_status.ballotStatus == 'OPEN' %}
         <form method="POST">
           {% if not candidates["president"]|length <= 0 %}
           <div class="vote-form">
@@ -419,6 +420,7 @@
           </h4>
           <button type="submit">SUBMIT VOTE</button>
         </form>
+        {% endif %}
       </div>
     </main>
   </body>

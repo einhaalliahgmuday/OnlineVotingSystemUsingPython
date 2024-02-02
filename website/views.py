@@ -99,6 +99,13 @@ def settings():
 @views.route('/vote', methods=['GET', 'POST'])
 @login_required
 def vote():
+    current_ballot_status = models.BallotStatus.query.first()
+
+    if current_ballot_status and current_ballot_status.ballotStatus == 'CLOSED':
+        flash("Voting is closed.", "error")
+        return redirect(url_for('views.home'))
+
+
     if rules.hasVoted() == True:
         flash("You have voted already. You can only vote once.", "error")
         return redirect(request.referrer)
@@ -120,7 +127,7 @@ def vote():
                 db.session.rollback()
                 print(f"Error during data insertion: {e}")
         
-        return render_template('vote.html', candidates = rules.getCandidates())
+        return render_template('vote.html', candidates = rules.getCandidates(), current_ballot_status=current_ballot_status)
 
 # ROUTE FOR VOTE LIVE RESULTS
 @views.route('/live-results')

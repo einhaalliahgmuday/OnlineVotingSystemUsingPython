@@ -139,32 +139,27 @@ section p{
         color: white;
     }
 
+
     /* The status display */
     .toggle-btn, .clear {
         display: inline-block;
         cursor: pointer;
         border: none;
-        width: 100px;
+        width: 125px;
         height: 40px;
         border-radius: 5px;
         margin-top: -25px;
         margin-right: -1170px;
         margin-left: 1180px;
-        text-transform: uppercase;
+        font-weight: bold;
       }
   
-      #clear-btn {
+      #clear-btn, #open-btn {
         background-color:  #7D0000;
-        color: #fff;
+        color: yellow;
       }
-  
-      #open-btn {
-        background-color:  #7D0000;
-        color: #fff;
-      }
-  
-      #close-btn {
-        background-color:  #7D0000;
+
+      #clear-btn:hover, #open-btn:hover {
         color: #fff;
       }
   
@@ -222,6 +217,10 @@ section p{
         background-color: #7D0000;
         height: 30px;
         margin-top: -1px;
+    }
+
+    ion-icon:hover {
+        color: #7D0000;
     }
     
     

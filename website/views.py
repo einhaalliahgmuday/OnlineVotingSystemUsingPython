@@ -148,7 +148,12 @@ def ballot():
         "fourth_yr_rep": models.Candidate.query.filter_by(position="fourth_yr_rep").all()
     }
 
-    return render_template('Admin_Ballot.html', candidates=candidates)
+    current_ballot_status = models.BallotStatus.query.first()
+
+    if request.method == 'POST':
+        update_ballot_status()
+
+    return render_template('Admin_Ballot.html', candidates=candidates, current_ballot_status=current_ballot_status)
 
 @views.route('/ballot/delete-candidate/<string:studentId>', methods=['DELETE'])
 def deleteCandidate(studentId):
@@ -157,9 +162,9 @@ def deleteCandidate(studentId):
     if candidate:
         db.session.delete(candidate)
         db.session.commit()
-        flash('Candidate successfully deleted.', category='success'), 200
+        return jsonify({'success': True, 'message': 'Candidate successfully deleted.'}), 200
     else:
-        flash('Candidate not found.', category='error'), 404
+        return jsonify({'success': False, 'message': 'Candidate not found.'}), 404
 
 @views.route('/ballot/add-candidate', methods=['POST'])
 def addCandidate():
@@ -208,57 +213,43 @@ def update_ballot_status():
     if request.method == 'POST':
         action = request.form.get('action')
 
-        if action == 'open' and not ballot_status.isOpen:
-            # Logic to open the ballot
-            ballot_status.isOpen = True
-            ballot_status.isClosed = False
+        if action == 'open' and ballot_status.ballotStatus == 'NEW':
+            ballot_status.ballotStatus = 'OPEN'
             db.session.commit()
             flash('Ballot is now open!', 'success')
-
-        elif action == 'clear':
-            # Logic to clear the ballot
-            if ballot_status.isClosed:
-                models.Candidate.query.delete()
-                db.session.commit()
-                flash('Ballot cleared successfully!', 'success')
-            else:
-                flash('Cannot clear the ballot. Please close the ballot first.', 'error')
-
-        elif action == 'close' and not ballot_status.isClosed:
-            # Logic to close the ballot
-            ballot_status.isOpen = False
-            ballot_status.isClosed = True
+            return jsonify({'success': True})
+        
+        elif action == 'close' and ballot_status.ballotStatus == 'OPEN':
+            ballot_status.ballotStatus = 'CLOSED'
             db.session.commit()
             flash('Ballot is now closed!', 'success')
-
+            return jsonify({'success': True})
         else:
             flash('Invalid action or the ballot is already in the desired status.', 'error')
 
-@views.route('/clear-ballot')
+    return jsonify({'success': False})
+
+@views.route('/clear-ballot', methods=['GET', 'POST'])
 def clearballot():
     ballot_status = models.BallotStatus.query.first()
 
-    if ballot_status.isClosed:
+    if ballot_status.ballotStatus == 'CLOSED':
         try:
-            # Clear all posts
+            # Clear all posts, votes, and candidates
             models.Post.query.delete()
-
-            # Clear all votes
             models.Vote.query.delete()
-
-            # Clear all candidates
             models.Candidate.query.delete()
 
             # Reset BallotStatus to a new state
-            ballot_status.isOpen = False
-            ballot_status.isClosed = False
+            ballot_status.ballotStatus = 'NEW'
             db.session.commit()
 
             flash('Ballot cleared successfully!', category='success')
+            return jsonify({'success': True})
         except Exception as e:
             db.session.rollback()
             flash(f'Error clearing ballot: {str(e)}', category='error')
+            return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 500
     else:
         flash('Cannot clear the ballot. Please close the ballot first.', category='error')
-
-    return redirect('/ballot')
+        return jsonify({'success': False, 'message': 'Ballot is not closed.'}), 400

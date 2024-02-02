@@ -16,7 +16,7 @@
         <nav>
             <ul>
                 <li><a href="/">Timeline</a></li>
-                <li><a href="/ballot">Ballot</a></li>
+                <li><a class="current-page" href="/ballot">Ballot</a></li>
                 <li><a href="/live-results">Live Result</a></li>
                 <li><a href="/settings">Settings</a></li>
             </ul>
@@ -91,8 +91,14 @@
     </div>
     
     <div class="displaystat">
-      <div id="status">STATUS: NEW</div>
-      <button id="open-btn" class="toggle-btn" data-action="open" onclick="toggleState()">OPEN BALLOT</button>
+      <div id="status">STATUS: {{ current_ballot_status.ballotStatus }}</div>
+      <button id="open-btn" class="toggle-btn" data-action="{{ current_ballot_status.ballotStatus | lower }}" onclick="toggleState()">
+        {% if current_ballot_status.ballotStatus == 'NEW' %}
+          OPEN BALLOT
+        {% else %}
+          CLOSE BALLOT
+        {% endif %}
+      </button>
       <button id="clear-btn" class="clear" data-action="clear" onclick="clearBallot()">CLEAR BALLOT</button>
     </div>
 

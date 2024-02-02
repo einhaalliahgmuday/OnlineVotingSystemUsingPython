@@ -7,6 +7,7 @@ function deleteCandidate(studentId) {
       alert(`Candidate successfully deleted.`);
       window.location.reload();
     })
+
     .catch((error) => {
       console.error("Error:", error);
     });
@@ -17,33 +18,20 @@ function toggleState() {
   var openBtn = document.getElementById('open-btn');
   var clearBtn = document.getElementById('clear-btn');
 
-  // Assuming you have an element with id 'status' for displaying the status
   var currentStatus = statusElement.innerText.trim();
+  var action = currentStatus === 'STATUS: NEW' ? 'open' : 'close';  // Determine the action based on the current status
 
-  fetch("/update-ballot-status", {
+  fetch("/ballot/status", {
       method: "POST",
       headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",  // Set the content type to 'application/x-www-form-urlencoded'
       },
-      body: JSON.stringify({ currentStatus }),
+      body: "action=" + action,  // Pass the action as part of the request body
   })
       .then((response) => response.json())
       .then((data) => {
           if (data.success) {
-              if (currentStatus === "STATUS: NEW") {
-                  statusElement.innerText = 'STATUS: OPEN';
-                  openBtn.innerText = 'CLOSE BALLOT';
-                  openBtn.setAttribute('data-action', 'close');
-                  clearBtn.removeAttribute('disabled');
-              } else if (currentStatus === "STATUS: OPEN") {
-                  statusElement.innerText = 'STATUS: CLOSED';
-                  openBtn.setAttribute('disabled', 'true');
-              } else if (currentStatus === "STATUS: CLOSED") {
-                  statusElement.innerText = 'STATUS: NEW';
-                  openBtn.innerText = 'OPEN BALLOT';
-                  openBtn.setAttribute('data-action', 'open');
-                  clearBtn.setAttribute('disabled', 'true');
-              }
+                window.location.reload();
           } else {
               console.error("Error updating ballot status");
           }
@@ -57,9 +45,21 @@ function clearBallot() {
   var ballotStatus = document.getElementById('status').innerText.trim();
 
   if (ballotStatus === 'STATUS: CLOSED') {
-      // Allow clearing the ballot
-      // Add logic to clear the ballot and perform other actions if needed
-      alert('Ballot is cleared.');
+      fetch("/clear-ballot", {
+          method: "POST",
+      })
+          .then((response) => response.json())
+          .then((data) => {
+              if (data.success) {
+                  alert('Ballot is cleared successfully.');
+                  window.location.reload();
+              } else {
+                  console.error("Error clearing ballot");
+              }
+          })
+          .catch((error) => {
+              console.error("Error:", error);
+          });
   } else {
       alert('Cannot clear the ballot. Please close the ballot first.');
   }

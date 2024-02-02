@@ -21,8 +21,6 @@ class Candidate(db.Model):
     voteCount = None
     votePercentage = None
     student = db.relationship('User', backref='candidate', lazy=True)
-    ballot_status_id = db.Column(db.Integer, db.ForeignKey('ballot_status.id'), nullable=False)
-
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,9 +49,7 @@ class Vote(db.Model):
 
 class BallotStatus(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    isOpen = db.Column(db.Boolean, nullable=False, default=False)
-    isClosed = db.Column(db.Boolean, nullable=False, default=False)
-
+    ballotStatus = db.Column(db.String(5), nullable=False, default='NEW')
 
 
 

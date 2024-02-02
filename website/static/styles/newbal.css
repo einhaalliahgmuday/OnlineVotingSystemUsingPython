@@ -75,6 +75,10 @@ nav a:hover {
     color: yellow;
 }
 
+.current-page {
+    color: yellow;
+}
+
 section {
     padding: 10px;
     text-align: center;

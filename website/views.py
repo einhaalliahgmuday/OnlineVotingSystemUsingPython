@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 
 views = Blueprint('views', __name__)
 
+# ROUTE FOR HOME/TIMELINE
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
@@ -14,7 +15,7 @@ def home():
         userPostsCount = rules.getUserPostsCount()
 
         if userPostsCount >= 3:
-            flash("Users are only allowed for three (3) posts. Delete one of your posts, then try again.", "error")
+            flash("You are only allowed for three (3) posts. Delete one of your posts, then try again.", "error")
         else:
             text = request.form.get('text')
             file = request.files['post-image']
@@ -60,8 +61,14 @@ def home():
 
     posts = rules.getSortedPostsByUserRole()
 
-    return render_template("Timeline.html", posts=posts, user=current_user, isCandidate = rules.isCandidate())
+    if current_user.userType == "Admin":
+        return render_template("timeline-admin.html", posts=posts, user=current_user)
+    elif rules.isCandidate():
+        return render_template("timeline-candidate.html", posts=posts, user=current_user)
+    else:
+        return render_template("timeline-student.html", posts=posts, user=current_user)
 
+# ROUTE FOR DELETING A POST
 @views.route('/timeline/delete-post/postId=<int:postId>', methods=['DELETE'])
 def deletePost(postId):
     post = models.Post.query.get(postId)
@@ -73,26 +80,28 @@ def deletePost(postId):
 
             db.session.delete(post)
             db.session.commit()
-            # flash ("Post deleted successfully.", 'success')
-        # else:
-        #     flash ("You are not allowed to delete this post.", 'error')
-    # else:
-    #     flash ("An error occured. Please try again later.", "error")
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'message': 'You are not allowed to delete this post.'})
+    else:
+        return jsonify({'success': False, 'message': 'An error occured. Please try again later.'})
     
+# ROUTE FOR USER SETTINGS
 @views.route('/settings')
 @login_required
 def settings():
     if current_user.userType == "Admin":
-        return render_template('Admin_Settings.html', user=current_user)
+        return render_template('settings-admin.html', user=current_user)
     elif current_user.userType == "Student":
-        return render_template('Student_Settings.html', user=current_user)
+        return render_template('settings-student.html', user=current_user)
 
-@views.route('/vote-now', methods=['GET', 'POST'])
+# ROUTE FOR VOTE
+@views.route('/vote', methods=['GET', 'POST'])
 @login_required
 def vote():
     if rules.hasVoted() == True:
-        flash("You've already voted. You can only vote once.", "error")
-        return redirect(url_for('views.home'))
+        flash("You have voted already. You can only vote once.", "error")
+        return redirect(request.referrer)
     else:
         if request.method == 'POST':
             formData = request.form.to_dict()
@@ -111,12 +120,13 @@ def vote():
                 db.session.rollback()
                 print(f"Error during data insertion: {e}")
         
-        return render_template('VoteNow.html', candidates = rules.getCandidates())
+        return render_template('vote.html', candidates = rules.getCandidates())
 
+# ROUTE FOR VOTE LIVE RESULTS
 @views.route('/live-results')
 @login_required
 def liveResults():
-    return render_template("LiveResult.html", voteResults = rules.getVoteResults(), user=current_user)
+    return render_template("live-results.html", voteResults = rules.getVoteResults(), user=current_user)
 
 @views.route('/ballot', methods=['GET', 'POST'])
 @login_required

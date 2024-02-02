@@ -16,12 +16,17 @@
     <header>
       <nav>
         <ul>
+<<<<<<< HEAD:website/templates/Timeline.html
           <li><a href="/">Timeline</a></li>
           {% if user.userType == "Admin" %}
           <li><a href="/ballot">Ballot</a></li>
           {% else %}
           <li><a href="/vote-now">Vote Now</a></li>
           {% endif %}
+=======
+          <li><a class="current-page" href="/">Timeline</a></li>
+          <li><a href="/vote">Vote Now</a></li>
+>>>>>>> 85ffce3c53395e5c34b2ca2884783add10d3c2d5:website/templates/timeline-student.html
           <li><a href="/live-results">Live Result</a></li>
           <li><a href="/settings">Settings</a></li>
         </ul>
@@ -48,30 +53,7 @@
     </div>
     {% endif %} {% endwith%}
 
-    <!-- ADD POST FOR USERS AND CANDIDATES -->
-    {% if user.userType == "Admin" or isCandidate == True %}
-    <div class="add-post-section">
-      <form action="/" method="POST" enctype="multipart/form-data">
-        <textarea
-          name="text"
-          id="post-text"
-          placeholder="Add Post to Your Timeline"
-        ></textarea>
-        <div class="input-and-post-btn-container">
-          <div class="input-file-container">
-            <span class="file-name"></span>
-            <label for="post-image"
-              ><i class="post-image-icon fa-regular fa-image"></i
-            ></label>
-            <input type="file" name="post-image" id="post-image" />
-          </div>
-          <button class="post-btn" type="submit">Post</button>
-        </div>
-      </form>
-    </div>
-    {% endif %}
-
-    <!-- DISPLAY POSTS -->
+    <!-- MAIN -->
     <div class="timeline">
       {% for post in posts %}
       <div class="timeline-item">
@@ -92,13 +74,6 @@
         <p class="display-post-text">{{ post.text | trim }}</p>
         {% endif %} {% if post.imageSrc %}
         <img class="display-post-image" src="{{post.imageSrc}}" alt="" />
-        {% endif %} {% if user.userType == "Admin" or post.userId == user.userId
-        %}
-        <div class="options-icon">
-          <span class="option"
-            ><i class="fas fa-trash-alt" onclick="deletePost({{post.id}})"></i
-          ></span>
-        </div>
         {% endif %}
       </div>
       {% endfor %}

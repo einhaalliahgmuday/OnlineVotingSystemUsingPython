@@ -14,7 +14,6 @@
 }
 
 .flash-close-btn {
-  background-color: #7d0000;
   border-radius: 5px;
   background-color: transparent;
   color: black;
@@ -26,6 +25,11 @@
   font-weight: bold;
 }
 
+.flash-close-btn:hover {
+  background-color: transparent;
+  color: yellow;
+}
+
 body {
   background-image: url("../images/Background.jpg");
   background-size: cover;
@@ -33,10 +37,12 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
+
 .student-button {
   text-align: center;
   margin-top: 255px;
 }
+
 .admin-button {
   text-align: center;
   margin-top: 10px;
@@ -140,6 +146,10 @@ nav {
   color: white;
   text-align: center;
   padding: 20px;
+}
+
+.current-page {
+  color: yellow;
 }
 
 nav ul {

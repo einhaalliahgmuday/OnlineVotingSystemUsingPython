@@ -143,44 +143,15 @@ def liveResults():
     else:
         return render_template("live-results.html", voteResults = rules.getVoteResults(), user=current_user)
 
-@views.route('/ballot', methods=['GET', 'POST'])
+# ROUTE FOR BALLOT
+@views.route('/ballot')
 @login_required
 def ballot():
-
-    candidates = {
-        "president": models.Candidate.query.filter_by(position="president").all(),
-        "executive_vp": models.Candidate.query.filter_by(position="executive_vp").all(),
-        "executive_board_sec": models.Candidate.query.filter_by(position="executive_board_sec").all(),
-        "vp_finance": models.Candidate.query.filter_by(position="vp_finance").all(),
-        "vp_academic_affairs": models.Candidate.query.filter_by(position="vp_academic_affairs").all(),
-        "vp_internal_affairs": models.Candidate.query.filter_by(position="vp_internal_affairs").all(),
-        "vp_external_affairs": models.Candidate.query.filter_by(position="vp_external_affairs").all(),
-        "vp_public_relations": models.Candidate.query.filter_by(position="vp_public_relations").all(),
-        "vp_research_dev": models.Candidate.query.filter_by(position="vp_research_dev").all(),
-        "first_yr_rep": models.Candidate.query.filter_by(position="first_yr_rep").all(),
-        "second_yr_rep": models.Candidate.query.filter_by(position="second_yr_rep").all(),
-        "third_yr_rep": models.Candidate.query.filter_by(position="third_yr_rep").all(),
-        "fourth_yr_rep": models.Candidate.query.filter_by(position="fourth_yr_rep").all()
-    }
-
     current_ballot_status = models.BallotStatus.query.first()
 
-    if request.method == 'POST':
-        update_ballot_status()
+    return render_template('ballot.html', candidates=rules.getCandidates(), current_ballot_status=current_ballot_status)
 
-    return render_template('ballot.html', candidates=candidates, current_ballot_status=current_ballot_status)
-
-@views.route('/ballot/delete-candidate/<string:studentId>', methods=['DELETE'])
-def deleteCandidate(studentId):
-    candidate = models.Candidate.query.filter_by(studentId=studentId).first()
-
-    if candidate:
-        db.session.delete(candidate)
-        db.session.commit()
-        return jsonify({'success': True, 'message': 'Candidate successfully deleted.'}), 200
-    else:
-        return jsonify({'success': False, 'message': 'Candidate not found.'}), 404
-
+# ROUTE FOR ADDING CANDIDATE IN THE BALLOT
 @views.route('/ballot/add-candidate', methods=['POST'])
 def addCandidate():
     if request.method == 'POST':
@@ -191,7 +162,6 @@ def addCandidate():
 
         if existing_candidate:
             flash('Candidate already exists.', category='error')
-            return redirect('/ballot')
         else:
             user = models.User.query.filter(models.User.userId == user_id_input, models.User.userType == "Student").first()
 
@@ -218,10 +188,21 @@ def addCandidate():
             else:
                 flash("Student does not exist.", "error")
                     
-            return redirect('/ballot')
+        return redirect('/ballot')
 
-    return render_template('ballot.html')
+# ROUTE FOR REMOVING CANDIDATE FROM THE BALLOT
+@views.route('/ballot/delete-candidate/<string:studentId>', methods=['DELETE'])
+def deleteCandidate(studentId):
+    candidate = models.Candidate.query.filter_by(studentId=studentId).first()
+
+    if candidate:
+        db.session.delete(candidate)
+        db.session.commit()
+        return jsonify({'success': True}), 200
+    else:
+        return jsonify({'success': False, 'message': 'Candidate not found.'}), 404
     
+# ROUTE FOR UPDATING THE BALLOT STATUS (OPEN/CLOSE)
 @views.route('/ballot/status', methods=['POST'])
 def update_ballot_status():
     ballot_status = models.BallotStatus.query.first()
@@ -236,9 +217,8 @@ def update_ballot_status():
                 flash('Ballot is now open!', 'success')
                 return jsonify({'success': True})
             else:
-                flash('Ballot is empty.', 'error')
-                return jsonify({'success': True})
-        
+                flash('Cannot open ballot. Ballot is empty.', 'error')
+                return jsonify({'success': False})  
         elif action == 'close' and ballot_status.ballotStatus == 'OPEN':
             ballot_status.ballotStatus = 'CLOSED'
             db.session.commit()
@@ -248,13 +228,14 @@ def update_ballot_status():
             flash('Invalid action or the ballot is already in the desired status.', 'error')
             return jsonify({'success': False})
 
-@views.route('/clear-ballot', methods=['GET', 'POST'])
+# ROUTE FOR CLEARING THE BALLOT
+@views.route('/ballot/clear-ballot', methods=['POST'])
 def clearballot():
     ballot_status = models.BallotStatus.query.first()
 
     if ballot_status.ballotStatus == 'NEW' or ballot_status.ballotStatus == 'CLOSED':
         try:
-            # Clear all posts, votes, and candidates
+            # Clear all records in post, vote, and candidate tables
             posts = models.Post.query.all()
             if posts:
                 for post in posts:
@@ -265,7 +246,7 @@ def clearballot():
             models.Vote.query.delete()
             models.Candidate.query.delete()
 
-            # Reset BallotStatus to a new state
+            # Reset ballotStatus to a new state
             ballot_status.ballotStatus = 'NEW'
             db.session.commit()
 
@@ -273,8 +254,7 @@ def clearballot():
             return jsonify({'success': True})
         except Exception as e:
             db.session.rollback()
-            flash(f'Error clearing ballot: {str(e)}', category='error')
+            flash("An error occured. Please try again later.", category='error')
             return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 500
     elif ballot_status == "OPEN":
-        flash('Cannot clear the ballot. Please close the ballot first.', category='error')
         return jsonify({'success': False, 'message': 'Ballot is not closed.'}), 400

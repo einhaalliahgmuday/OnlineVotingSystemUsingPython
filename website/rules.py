@@ -76,57 +76,22 @@ def isCandidate():
     
     return isCandidate
 
-def serializeCandidate(candidate):
-    return {
-        'studentId': candidate.studentId,
-        'name': candidate.name,
-        'position': candidate.position
-    }
-
 def getCandidates():
-    candidates = {"president": [],
-                  "executive_vp": [],
-                  "executive_board_sec": [],
-                  "vp_finance": [],
-                  "vp_academic_affairs": [],
-                  "vp_internal_affairs": [],
-                  "vp_external_affairs": [],
-                  "vp_public_relations": [],
-                  "vp_research_dev": [],
-                  "first_yr_rep": [],
-                  "second_yr_rep": [],
-                  "third_yr_rep": [],
-                  "fourth_yr_rep": []}
-
-    dbCandidates = models.Candidate.query.all()
-    
-    for candidate in dbCandidates:
-        if candidate.position == "president":
-            candidates['president'].append(serializeCandidate(candidate))
-        elif candidate.position == "executive_vp":
-            candidates['executive_vp'].append(serializeCandidate(candidate))
-        elif candidate.position == "executive_board_sec":
-            candidates['executive_board_sec'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_finance":
-            candidates['vp_finance'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_academic_affairs":
-            candidates['vp_academic_affairs'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_internal_affairs":
-            candidates['vp_internal_affairs'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_external_affairs":
-            candidates['vp_external_affairs'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_public_relations":
-            candidates['vp_public_relations'].append(serializeCandidate(candidate))
-        elif candidate.position == "vp_research_dev":
-            candidates['vp_research_dev'].append(serializeCandidate(candidate))
-        elif candidate.position == "first_yr_rep":
-            candidates['first_yr_rep'].append(serializeCandidate(candidate))
-        elif candidate.position == "second_yr_rep":
-            candidates['second_yr_rep'].append(serializeCandidate(candidate))
-        elif candidate.position == "third_yr_rep":
-            candidates['third_yr_rep'].append(serializeCandidate(candidate))
-        elif candidate.position == "fourth_yr_rep":
-            candidates['fourth_yr_rep'].append(serializeCandidate(candidate))
+    candidates = {
+        "president": models.Candidate.query.filter_by(position="president").all(),
+        "executive_vp": models.Candidate.query.filter_by(position="executive_vp").all(),
+        "executive_board_sec": models.Candidate.query.filter_by(position="executive_board_sec").all(),
+        "vp_finance": models.Candidate.query.filter_by(position="vp_finance").all(),
+        "vp_academic_affairs": models.Candidate.query.filter_by(position="vp_academic_affairs").all(),
+        "vp_internal_affairs": models.Candidate.query.filter_by(position="vp_internal_affairs").all(),
+        "vp_external_affairs": models.Candidate.query.filter_by(position="vp_external_affairs").all(),
+        "vp_public_relations": models.Candidate.query.filter_by(position="vp_public_relations").all(),
+        "vp_research_dev": models.Candidate.query.filter_by(position="vp_research_dev").all(),
+        "first_yr_rep": models.Candidate.query.filter_by(position="first_yr_rep").all(),
+        "second_yr_rep": models.Candidate.query.filter_by(position="second_yr_rep").all(),
+        "third_yr_rep": models.Candidate.query.filter_by(position="third_yr_rep").all(),
+        "fourth_yr_rep": models.Candidate.query.filter_by(position="fourth_yr_rep").all()
+    }
     
     return candidates
 

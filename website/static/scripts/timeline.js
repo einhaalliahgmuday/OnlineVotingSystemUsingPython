@@ -17,11 +17,10 @@ function deletePost(postId) {
   })
     .then((response) => response.json())
     .then((data) => {
-      if (data.success == false) {
+      if (!data.success) {
         alert(data.message);
-      } else if (data.success) {
-        window.location.reload();
       }
+      window.location.reload();
     })
     .catch((error) => {
       console.error("Error:", error);

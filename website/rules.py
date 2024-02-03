@@ -234,3 +234,9 @@ def getVoteResults():
             voteResults['fourth_yr_rep']['candidates'].append(serializeCandidateForVoteResults(candidate))
     
     return voteResults
+
+# BALLOT RULES
+
+def getBallotStatus():
+    ballot = models.BallotStatus.query.first()
+    return ballot.ballotStatus

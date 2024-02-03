@@ -99,41 +99,49 @@ def settings():
 @views.route('/vote', methods=['GET', 'POST'])
 @login_required
 def vote():
-    current_ballot_status = models.BallotStatus.query.first()
+    ballotStatus = rules.getBallotStatus()
 
-    if current_ballot_status and current_ballot_status.ballotStatus == 'CLOSED':
-        flash("Voting is closed.", "error")
-        return redirect(url_for('views.home'))
-
-
-    if rules.hasVoted() == True:
-        flash("You have voted already. You can only vote once.", "error")
+    if ballotStatus == "NEW":
+        flash ("Voting is not yet open.", "error")
+        return redirect(request.referrer)
+    elif ballotStatus == "CLOSED":
+        flash ("Voting is now closed.", "error")
         return redirect(request.referrer)
     else:
-        if request.method == 'POST':
-            formData = request.form.to_dict()
-            voter = current_user.userId
+        if rules.hasVoted() == True:
+            flash("You have voted already. You can only vote once.", "error")
+            return redirect(request.referrer)
+        else:
+            if request.method == 'POST':
+                formData = request.form.to_dict()
+                voter = current_user.userId
 
-            vote = models.Vote(**formData, voter=voter)
+                vote = models.Vote(**formData, voter=voter)
+                
+                db.session.add(vote)
+
+                try:
+                    db.session.commit()
+                    flash('Your vote is counted. Thank you.', category="success")
+                    socketio.emit('vote', rules.getVoteResults(), room=None)
+                    return redirect(url_for('views.home'))
+                except Exception as e:
+                    db.session.rollback()
+                    print(f"Error during data insertion: {e}")
             
-            db.session.add(vote)
-
-            try:
-                db.session.commit()
-                flash('Your vote is counted. Thank you.', category="success")
-                socketio.emit('vote', rules.getVoteResults(), room=None)
-                return redirect(url_for('views.home'))
-            except Exception as e:
-                db.session.rollback()
-                print(f"Error during data insertion: {e}")
-        
-        return render_template('vote.html', candidates = rules.getCandidates(), current_ballot_status=current_ballot_status)
+            return render_template('vote.html', candidates = rules.getCandidates())
 
 # ROUTE FOR VOTE LIVE RESULTS
 @views.route('/live-results')
 @login_required
 def liveResults():
-    return render_template("live-results.html", voteResults = rules.getVoteResults(), user=current_user)
+    ballotStatus = rules.getBallotStatus()
+    
+    if ballotStatus == "NEW":
+        flash("Voting is not yet open.", "error")
+        return redirect(request.referrer)
+    else:
+        return render_template("live-results.html", voteResults = rules.getVoteResults(), user=current_user)
 
 @views.route('/ballot', methods=['GET', 'POST'])
 @login_required
@@ -175,7 +183,6 @@ def deleteCandidate(studentId):
 
 @views.route('/ballot/add-candidate', methods=['POST'])
 def addCandidate():
-
     if request.method == 'POST':
         user_id_input = request.form.get('user-id-input')
 
@@ -185,29 +192,31 @@ def addCandidate():
         if existing_candidate:
             flash('Candidate already exists.', category='error')
             return redirect('/ballot')
-
         else:
-            user = models.User.query.get(user_id_input)
+            user = models.User.query.filter(models.User.userId == user_id_input, models.User.userType == "Student").first()
 
             if user:
-                first_name = user.firstName
-                last_name = user.lastName
-
+                name = user.firstName + " " + user.lastName
                 position = request.form.get('position')
 
-                new_candidate = models.Candidate(studentId=user.userId, name=f"{first_name} {last_name}", position=position)
+                if position:
+                    new_candidate = models.Candidate(studentId=user.userId, name=name, position=position)
 
-                db.session.add(new_candidate)
+                    db.session.add(new_candidate)
 
-                try:
-                    db.session.commit()
-                    flash('Candidate added successfully.', category='success')
-                except IntegrityError:
-                    db.session.rollback()
-                    flash('Candidate already exists.', category='error')
-                except Exception as e:
-                    db.session.rollback()
-                    flash(f"Error adding candidate: {e}", category='error')
+                    try:
+                        db.session.commit()
+                        flash('Candidate added successfully.', category='success')
+                    except IntegrityError:
+                        db.session.rollback()
+                        flash('Candidate already exists.', category='error')
+                    except Exception as e:
+                        db.session.rollback()
+                        flash(f"Error adding candidate: {e}", category='error')
+                else:
+                    flash("Please select a position.", "error")
+            else:
+                flash("Student does not exist.", "error")
                     
             return redirect('/ballot')
 
@@ -240,9 +249,15 @@ def update_ballot_status():
 def clearballot():
     ballot_status = models.BallotStatus.query.first()
 
-    if ballot_status.ballotStatus == 'CLOSED':
+    if ballot_status.ballotStatus == 'NEW' or ballot_status.ballotStatus == 'CLOSED':
         try:
             # Clear all posts, votes, and candidates
+            posts = models.Post.query.all()
+            if posts:
+                for post in posts:
+                    if post.imageDir:
+                        os.remove(post.imageDir)
+
             models.Post.query.delete()
             models.Vote.query.delete()
             models.Candidate.query.delete()
@@ -257,6 +272,6 @@ def clearballot():
             db.session.rollback()
             flash(f'Error clearing ballot: {str(e)}', category='error')
             return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 500
-    else:
+    elif ballot_status == "OPEN":
         flash('Cannot clear the ballot. Please close the ballot first.', category='error')
         return jsonify({'success': False, 'message': 'Ballot is not closed.'}), 400

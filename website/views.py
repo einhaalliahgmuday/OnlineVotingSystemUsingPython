@@ -217,7 +217,7 @@ def update_ballot_status():
                 flash('Ballot is now open!', 'success')
                 return jsonify({'success': True})
             else:
-                flash('Cannot open ballot. Ballot is empty.', 'error')
+                flash('Ballot is empty.', 'error')
                 return jsonify({'success': False})  
         elif action == 'close' and ballot_status.ballotStatus == 'OPEN':
             ballot_status.ballotStatus = 'CLOSED'

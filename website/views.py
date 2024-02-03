@@ -160,7 +160,7 @@ def ballot():
     if request.method == 'POST':
         update_ballot_status()
 
-    return render_template('Admin_Ballot.html', candidates=candidates, current_ballot_status=current_ballot_status)
+    return render_template('ballot.html', candidates=candidates, current_ballot_status=current_ballot_status)
 
 @views.route('/ballot/delete-candidate/<string:studentId>', methods=['DELETE'])
 def deleteCandidate(studentId):
@@ -211,7 +211,7 @@ def addCandidate():
                     
             return redirect('/ballot')
 
-    return render_template('Admin_Ballot.html')
+    return render_template('ballot.html')
     
 @views.route('/ballot/status', methods=['POST'])
 def update_ballot_status():

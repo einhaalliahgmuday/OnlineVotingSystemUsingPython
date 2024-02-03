@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../static/styles/vote.css" />
+    <link rel="stylesheet" href="../static/styles/style.css" />
     <title>Live Result</title>
   </head>
 
-  <body>
+  <body class="vote-bg">
     <header>
       <nav>
         <ul>
@@ -46,7 +47,7 @@
     {% endif %} {% endwith%}
 
     <!-- MAIN -->
-    <div class="live-result-container">
+    <main class="live-result-container">
       <h1>CENTRAL STUDENT COUNCIL</h1>
       <div class="live-time">
         <p>As of <time datetime="" id="liveTime"></time></p>
@@ -376,7 +377,7 @@
         </div>
       </div>
       {% endif %}
-    </div>
+    </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
     <script src="../static/scripts/live-results.js"></script>

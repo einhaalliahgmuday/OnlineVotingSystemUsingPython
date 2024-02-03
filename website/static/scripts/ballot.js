@@ -4,7 +4,6 @@ function deleteCandidate(studentId) {
   })
     .then((response) => response.text())
     .then(() => {
-      alert(`Candidate successfully deleted.`);
       window.location.reload();
     })
 
@@ -31,6 +30,7 @@ function toggleState() {
       if (data.success) {
         window.location.reload();
       } else {
+        window.location.reload();
         console.error("Error updating ballot status");
       }
     })
@@ -42,7 +42,7 @@ function toggleState() {
 function clearBallot() {
   var ballotStatus = document.getElementById("status").innerText.trim();
 
-  if (ballotStatus === "STATUS: CLOSED") {
+  if (ballotStatus === "STATUS: NEW" || ballotStatus === "STATUS: CLOSED") {
     // Ask for confirmation
     var confirmation = confirm(
       "Are you sure you want to clear the ballot? This action cannot be undone."
@@ -63,8 +63,6 @@ function clearBallot() {
         .catch((error) => {
           console.error("Error:", error);
         });
-    } else {
-      alert("Clear ballot action canceled.");
     }
   } else if (ballotStatus === "STATUS: OPEN") {
     alert("Cannot clear the ballot. Please close the ballot first.");

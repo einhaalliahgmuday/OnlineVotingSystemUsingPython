@@ -43,32 +43,37 @@
       {% endif %} {% endfor %}
     </div>
     {% endif %} {% endwith%}
-
-    <!-- MAIN -->
-    <div class="timeline">
-      {% for post in posts %}
-      <div class="timeline-item">
-        <div class="center">
-          <img
-            class="post-csc-logo"
-            src="../static/images/CSC_LOGO.png"
-            alt="icon"
-          />
-          {% if post.userRole == "Admin" %}
-          <p class="display-post-user-name">PUP BIÑAN COMMISSION ON ELECTION</p>
-          {% else %}
-          <p class="display-post-user-name">{{post.userName}}</p>
-          <p class="display-post-position">Running for {{post.userRole}}</p>
+    <main>
+      {% if posts|length <= 0 %}
+      <p class="no-posts-text">No posts.</p>
+      {% endif %}
+      <div class="timeline">
+        {% for post in posts %}
+        <div class="timeline-item">
+          <div class="center">
+            <img
+              class="post-csc-logo"
+              src="../static/images/CSC_LOGO.png"
+              alt="icon"
+            />
+            {% if post.userRole == "Admin" %}
+            <p class="display-post-user-name">
+              PUP BIÑAN COMMISSION ON ELECTION
+            </p>
+            {% else %}
+            <p class="display-post-user-name">{{post.userName}}</p>
+            <p class="display-post-position">Running for {{post.userRole}}</p>
+            {% endif %}
+          </div>
+          {% if post.text %}
+          <p class="display-post-text">{{ post.text | trim }}</p>
+          {% endif %} {% if post.imageSrc %}
+          <img class="display-post-image" src="{{post.imageSrc}}" alt="" />
           {% endif %}
         </div>
-        {% if post.text %}
-        <p class="display-post-text">{{ post.text | trim }}</p>
-        {% endif %} {% if post.imageSrc %}
-        <img class="display-post-image" src="{{post.imageSrc}}" alt="" />
-        {% endif %}
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
+    </main>
     <script src="../static/scripts/index.js"></script>
     <script src="../static/scripts/timeline.js"></script>
   </body>

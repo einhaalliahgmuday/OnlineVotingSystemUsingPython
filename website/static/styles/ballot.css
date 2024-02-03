@@ -1,33 +1,5 @@
-* {
-  box-sizing: border-box;
-}
-
-.flash {
-  padding: 1rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.flash.flash-success {
-  background-color: rgba(200, 255, 200, 0.726);
-}
-
-.flash.flash-error {
-  background-color: rgba(255, 200, 186, 0.726);
-  color: rgb(156, 12, 12);
-}
-
-.flash-close-btn {
-  background-color: #7d0000;
-  border-radius: 5px;
-  background-color: transparent;
-  color: black;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: bold;
+body {
+  text-align: center;
 }
 
 button,
@@ -35,56 +7,6 @@ input,
 select {
   font: inherit;
   text-align: center;
-}
-
-body {
-  background-size: cover;
-  background-position: center center;
-  background-attachment: fixed;
-  margin: 0;
-  text-align: center;
-  font-family: Arial, sans-serif;
-  background-image: url(../images/ballot.jpg);
-}
-
-header {
-  background-color: #7d0000;
-  color: white;
-
-  padding: 1px;
-}
-
-nav {
-  color: white;
-
-  padding: 20px;
-}
-
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: space-between;
-}
-
-nav li {
-  flex: 1;
-}
-
-nav a {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  font-size: 25px;
-}
-
-nav a:hover {
-  color: yellow;
-}
-
-.current-page {
-  color: yellow;
 }
 
 main {
@@ -99,11 +21,6 @@ h1 {
   font-weight: 500;
 }
 
-.block {
-  display: block;
-}
-
-/* The dropdown container */
 form {
   width: 50%;
   display: flex;
@@ -141,12 +58,10 @@ input[type="submit"]:hover {
   color: white;
 }
 
-/* The status display */
 .displaystat {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
 }
 
 .ballot-status {
@@ -174,7 +89,6 @@ input[type="submit"]:hover {
   font-size: 1rem;
   border-radius: 5px;
   cursor: pointer;
-
   padding: 0.6rem 1rem;
   border: none;
   box-shadow: 0 0 2px gray;
@@ -184,8 +98,11 @@ input[type="submit"]:hover {
   color: yellow;
 }
 
-/* The list for positionSelected */
-.Position {
+.position:first-child {
+  margin-top: 2rem;
+}
+
+.position {
   border: 1px solid black;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.747);

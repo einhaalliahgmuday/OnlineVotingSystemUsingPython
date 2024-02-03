@@ -3,23 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/styles/login.css" />
     <link rel="stylesheet" href="../static/styles/style.css" />
     <title>Login Form</title>
   </head>
   <body>
-    <div class="button-container">
-      <div class="student-button">
-        <button class="user-type-btn1" onclick="redirectTo('/login/student')">
-          STUDENT
-        </button>
-      </div>
-
-      <div class="admin-button">
-        <button class="user-type-btn2" onclick="redirectTo('/login/admin')">
-          ADMIN
-        </button>
-      </div>
-    </div>
+    <main>
+      <button class="user-type-btn" onclick="redirectTo('/login/student')">
+        STUDENT
+      </button>
+      <button class="user-type-btn" onclick="redirectTo('/login/admin')">
+        ADMIN
+      </button>
+    </main>
     <script type="text/javascript" src="../static/scripts/index.js"></script>
   </body>
 </html>

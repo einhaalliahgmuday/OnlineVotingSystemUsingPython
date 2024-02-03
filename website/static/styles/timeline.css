@@ -1,3 +1,20 @@
+.no-posts-text {
+  text-align: center;
+  margin-top: 15rem;
+  font-style: italic;
+}
+
+.add-post-section {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  max-width: 545px;
+  margin: 50px auto;
+}
+
 form {
   display: block;
   width: 100%;
@@ -69,7 +86,55 @@ input[type="file"] {
 .post-btn:hover {
   background-color: 7D0000;
   color: white;
+}
+
+.timeline:first-child {
+  margin-top: 50px;
+}
+
+.timeline {
+  max-width: 600px;
+  margin: 25px auto 50px;
+}
+
+.timeline-item {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.center {
+  text-align: center;
+}
+
+.post-csc-logo {
+  width: 280px;
+  border-radius: 50%;
+  margin-top: -60px;
+  margin-bottom: -65px;
+}
+
+.options-icon {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+}
+
+.option {
+  margin-left: 10px;
+  padding: 5px;
+  background-color: #7d0000;
+  color: white;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: #ffd30f;
+  color: #7d0000;
 }
 
 .display-post-user-name {

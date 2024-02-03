@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../static/styles/ballot.css" />
+    <link rel="stylesheet" href="../static/styles/style.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -126,7 +127,7 @@
 
       <div class="container">
         {% if candidates %} {% if not candidates["president"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>PRESIDENT</h2>
           {% for candidate in candidates["president"] %}
           <div class="list">
@@ -146,7 +147,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["executive_vp"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>EXECUTIVE VICE PRESIDENT</h2>
           {% for candidate in candidates["executive_vp"] %}
           <div class="list">
@@ -166,7 +167,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["executive_board_sec"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>EXECUTIVE BOARD SECRETARY</h2>
           {% for candidate in candidates["executive_board_sec"] %}
           <div class="list">
@@ -186,7 +187,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["vp_finance"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>VICE PRESIDENT FOR FINANCE</h2>
           {% for candidate in candidates["vp_finance"] %}
           <div class="list">
@@ -206,7 +207,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["vp_academic_affairs"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>VICE PRESIDENT FOR ACADEMIC AFFAIRS</h2>
           {% for candidate in candidates["vp_academic_affairs"] %}
           <div class="list">
@@ -226,7 +227,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["vp_internal_affairs"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>VICE PRESIDENT FOR INTERNAL AFFAIRS</h2>
           {% for candidate in candidates["vp_internal_affairs"] %}
           <div class="list">
@@ -246,7 +247,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["vp_external_affairs"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>VICE PRESIDENT FOR EXTERNAL AFFAIRS</h2>
           {% for candidate in candidates["vp_external_affairs"] %}
           <div class="list">
@@ -266,7 +267,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["vp_public_relations"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>VICE PRESIDENT FOR PUBLIC RELATIONS</h2>
           {% for candidate in candidates["vp_public_relations"] %}
           <div class="list">
@@ -286,7 +287,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["vp_research_dev"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>VICE PRESIDENT FOR RESEARCH AND DEVELOPMENT</h2>
           {% for candidate in candidates["vp_research_dev"] %}
           <div class="list">
@@ -306,7 +307,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["first_yr_rep"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>FIRST YEAR REPRESENTATIVE</h2>
           {% for candidate in candidates["first_yr_rep"] %}
           <div class="list">
@@ -326,7 +327,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["second_yr_rep"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>SECOND YEAR REPRESENTATIVE</h2>
           {% for candidate in candidates["second_yr_rep"] %}
           <div class="list">
@@ -346,7 +347,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["third_yr_rep"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>THIRD YEAR REPRESENTATIVE</h2>
           {% for candidate in candidates["third_yr_rep"] %}
           <div class="list">
@@ -366,7 +367,7 @@
         </div>
         {% endif %} {% endif %} {% if candidates %} {% if not
         candidates["fourth_yr_rep"]|length <= 0 %}
-        <div class="Position">
+        <div class="position">
           <h2>FOURTH YEAR REPRESENTATIVE</h2>
           {% for candidate in candidates["fourth_yr_rep"] %}
           <div class="list">

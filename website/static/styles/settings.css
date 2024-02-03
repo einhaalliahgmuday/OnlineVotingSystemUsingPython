@@ -1,0 +1,38 @@
+.account-container {
+  text-align: center;
+  padding: 20px;
+  margin-top: 50px;
+}
+
+.account-icon {
+  font-size: 250px;
+  color: #7d0000;
+  margin-bottom: -15px;
+  margin-top: 10px;
+}
+
+.student-number {
+  color: #7d0000;
+  font-size: 20px;
+}
+
+.account-name {
+  color: #7d0000;
+  font-size: 20px;
+}
+
+.logout-button {
+  background-color: #7d0000;
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.logout-button:hover {
+  background-color: #ffd30f;
+  color: #7d0000;
+}

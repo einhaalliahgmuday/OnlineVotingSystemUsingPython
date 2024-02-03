@@ -4,6 +4,12 @@ document.getElementById("post-text").addEventListener("input", function () {
   this.style.height = this.scrollHeight + "px";
 });
 
+// DISPLAY FILE NAME
+document.getElementById("post-image").addEventListener("change", function () {
+  const fileName = document.querySelector(".file-name");
+  fileName.textContent = this.files[0].name;
+});
+
 // DELETE POST
 function deletePost(postId) {
   fetch("/timeline/delete-post/postId=" + postId, {
@@ -21,9 +27,3 @@ function deletePost(postId) {
       console.error("Error:", error);
     });
 }
-
-// DISPLAY FILE NAME
-document.getElementById("post-image").addEventListener("change", function () {
-  const fileName = document.querySelector(".file-name");
-  fileName.textContent = this.files[0].name;
-});

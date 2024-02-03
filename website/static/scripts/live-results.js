@@ -1,3 +1,4 @@
+// UPDATE TIME
 setInterval(function () {
   document.getElementById("liveTime").textContent = new Date().toLocaleString();
 }, 1000);
@@ -6,6 +7,7 @@ document.getElementById("liveTime").textContent = new Date().toLocaleString();
 
 var socket = io("http://127.0.0.1:5000");
 
+// UPDATE VOTE RESULTS IN REAL-TIME
 socket.on("vote", function (data) {
   // UPDATE RESULT FOR PRESIDENT WHEN A USER VOTES
   if (data.president.candidates.length > 0) {

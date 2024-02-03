@@ -109,7 +109,7 @@ def vote():
         return redirect(request.referrer)
     else:
         if rules.hasVoted() == True:
-            flash("You have voted already. You can only vote once.", "error")
+            flash("You can only vote once.", "error")
             return redirect(request.referrer)
         else:
             if request.method == 'POST':
@@ -230,10 +230,14 @@ def update_ballot_status():
         action = request.form.get('action')
 
         if action == 'open' and ballot_status.ballotStatus == 'NEW':
-            ballot_status.ballotStatus = 'OPEN'
-            db.session.commit()
-            flash('Ballot is now open!', 'success')
-            return jsonify({'success': True})
+            if not models.Candidate.query.count() <= 0:
+                ballot_status.ballotStatus = 'OPEN'
+                db.session.commit()
+                flash('Ballot is now open!', 'success')
+                return jsonify({'success': True})
+            else:
+                flash('Ballot is empty.', 'error')
+                return jsonify({'success': True})
         
         elif action == 'close' and ballot_status.ballotStatus == 'OPEN':
             ballot_status.ballotStatus = 'CLOSED'
@@ -242,8 +246,7 @@ def update_ballot_status():
             return jsonify({'success': True})
         else:
             flash('Invalid action or the ballot is already in the desired status.', 'error')
-
-    return jsonify({'success': False})
+            return jsonify({'success': False})
 
 @views.route('/clear-ballot', methods=['GET', 'POST'])
 def clearballot():

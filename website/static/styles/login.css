@@ -1,0 +1,74 @@
+.flash {
+  position: absolute;
+  width: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  height: 100vh;
+}
+
+button {
+  display: block;
+  background-color: #7d0000;
+  color: yellow;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+button:hover {
+  color: white;
+  border-radius: 20px;
+}
+
+.user-type-btn {
+  width: 16rem;
+  font-size: 20px;
+  padding: 20px 0;
+}
+
+.login-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container img {
+  max-width: 300px;
+  margin-bottom: -60px;
+  margin-top: -120px;
+}
+
+h2 {
+  text-align: center;
+  color: #7d0000;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+.login-btn {
+  font-size: 16px;
+  padding: 10px 132px;
+}

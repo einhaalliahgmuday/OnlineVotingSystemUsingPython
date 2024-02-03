@@ -1,85 +1,11 @@
-.flash {
-  padding: 1rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.flash.flash-success {
-  background-color: rgba(200, 255, 200, 0.726);
-}
-
-.flash.flash-error {
-  background-color: rgba(255, 200, 186, 0.726);
-  color: rgb(156, 12, 12);
-}
-
-.flash-close-btn {
-  background-color: transparent;
-  border-radius: 5px;
-  color: black;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: bold;
-  margin: 0;
-}
-
-.flash-close-btn:hover {
-  background-color: transparent;
-  color: yellow;
-}
-
-body {
-  background-color: rgba(255, 203, 203, 0.945);
-  background-size: cover;
+.vote-bg {
+  background: rgba(255, 203, 203, 0.945);
   margin: 0;
   font-family: Arial, sans-serif;
 }
 
-header {
-  background-color: #7d0000;
-  color: white;
-  text-align: center;
-  padding: 1px;
-}
-
-nav {
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-
-nav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: space-between;
-}
-
-.current-page {
-  color: yellow;
-}
-
-nav li {
-  flex: 1;
-}
-
-nav a {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  font-size: 25px;
-}
-
-nav a:hover {
-  color: yellow;
-}
-
 main {
-  margin: 20px;
+  margin-bottom: 1rem;
 }
 
 .vote-form {
@@ -142,7 +68,6 @@ button:hover {
 
 .live-result-container {
   text-align: center;
-  padding: 20px 50000px;
 }
 
 .live-time {

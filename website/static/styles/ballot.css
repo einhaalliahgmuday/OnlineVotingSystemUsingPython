@@ -1,3 +1,9 @@
+.flash {
+  position: absolute;
+  top: 71px;
+  width: 100%;
+}
+
 body {
   text-align: center;
 }

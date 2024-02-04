@@ -1,3 +1,9 @@
+.flash {
+  position: absolute;
+  top: 71px;
+  width: 100%;
+}
+
 .vote-bg {
   background: rgba(255, 203, 203, 0.945);
   margin: 0;

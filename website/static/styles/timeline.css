@@ -1,3 +1,9 @@
+.flash {
+  position: absolute;
+  top: 71px;
+  width: 100%;
+}
+
 .no-posts-text {
   text-align: center;
   margin-top: 15rem;

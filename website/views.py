@@ -194,8 +194,17 @@ def addCandidate():
 @views.route('/ballot/delete-candidate/<string:studentId>', methods=['DELETE'])
 def deleteCandidate(studentId):
     candidate = models.Candidate.query.filter_by(studentId=studentId).first()
+    posts = models.Post.query.filter(models.Post.userId == candidate.studentId).all()
 
     if candidate:
+        if posts:
+            for post in posts:
+                if post.imageDir:
+                    os.remove(post.imageDir)
+
+                db.session.delete(post)
+                db.session.commit()
+
         db.session.delete(candidate)
         db.session.commit()
         return jsonify({'success': True}), 200

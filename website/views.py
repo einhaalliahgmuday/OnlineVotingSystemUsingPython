@@ -16,6 +16,7 @@ def home():
 
         if userPostsCount >= 3:
             flash("You are only allowed for three (3) posts. Delete one of your posts, then try again.", "error")
+            return redirect(url_for('views.home'))
         else:
             text = request.form.get('text')
             file = request.files['post-image']
@@ -31,8 +32,8 @@ def home():
             if isFile:
                 if not rules.allowed_file(file.filename):
                     flash("File is not an image file.", 'error')
-                    # redirect(url_for('views.home'))
                     isContinue = False
+                    redirect(url_for('views.home'))
                 else:
                     fileName = secure_filename(file.filename)
                     imageSrc = f'../static/images/posts/{imageId}_{fileName}'
